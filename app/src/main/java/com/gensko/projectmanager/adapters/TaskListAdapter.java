@@ -12,8 +12,11 @@ import com.gensko.projectmanager.R;
 import com.gensko.projectmanager.models.Task;
 import com.gensko.projectmanager.models.TaskList;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -92,13 +95,29 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
                 parentTaskView.setVisibility(View.GONE);
             }
             nameView.setText(task.getName());
-            dateView.setText(SimpleDateFormat.getDateInstance().format(task.getBegin()));
-            timeView.setText(
-                    String.format(
-                            "%s - %s",
-                            SimpleDateFormat.getTimeInstance().format(task.getBegin()),
-                            SimpleDateFormat.getTimeInstance().format(task.getEnd())));
+            showDate(task.getBegin());
+            showTime(task.getBegin(), task.getEnd());
             statusView.setImageResource(task.getStatus().getDrawableResourceId());
+        }
+
+        private void showDate(Date begin) {
+            String text = "";
+            if (begin != null)
+                text = SimpleDateFormat.getDateInstance().format(begin);
+            dateView.setText(text);
+        }
+
+        private void showTime(Date begin, Date end) {
+            DateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            String text = "";
+            if (begin != null && end != null)
+                text = String.format(
+                        "%s - %s",
+                        format.format(begin),
+                        format.format(end));
+            else if (begin != null)
+                text = SimpleDateFormat.getTimeInstance().format(begin);
+            timeView.setText(text);
         }
     }
 }
