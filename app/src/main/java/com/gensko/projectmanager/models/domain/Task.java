@@ -1,4 +1,7 @@
-package com.gensko.projectmanager.models;
+package com.gensko.projectmanager.models.domain;
+
+import com.gensko.projectmanager.models.Record;
+import com.gensko.projectmanager.models.Status;
 
 /**
  * Created by Genovich V.V. on 17.08.2015.
