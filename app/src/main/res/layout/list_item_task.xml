@@ -65,7 +65,7 @@
         android:layout_marginTop="10dp"
         android:singleLine="true" />
 
-    <ImageView
+    <TextView
         android:id="@+id/status"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -73,6 +73,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/name"
         android:layout_marginTop="10dp"
-        android:src="@drawable/ic_assignment_black_48dp" />
+        android:text="new"
+        android:gravity="center" />
 
 </RelativeLayout>

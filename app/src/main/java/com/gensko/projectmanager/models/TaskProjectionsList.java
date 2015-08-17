@@ -6,5 +6,5 @@ import java.util.ArrayList;
  * Created by Lynnfield on 15.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public class TaskList extends ArrayList<Task> {
+public class TaskProjectionsList extends ArrayList<TaskProjection> {
 }

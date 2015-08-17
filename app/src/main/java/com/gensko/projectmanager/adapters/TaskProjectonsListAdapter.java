@@ -5,12 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gensko.projectmanager.R;
-import com.gensko.projectmanager.models.Task;
-import com.gensko.projectmanager.models.TaskList;
+import com.gensko.projectmanager.models.TaskProjection;
+import com.gensko.projectmanager.models.TaskProjectionsList;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,15 +24,15 @@ import butterknife.ButterKnife;
  * Created by Lynnfield on 15.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHolder> {
+public class TaskProjectonsListAdapter extends RecyclerView.Adapter<TaskProjectonsListAdapter.ViewHolder> {
     private Context context;
-    private TaskList list = new TaskList();
+    private TaskProjectionsList list = new TaskProjectionsList();
 
-    public TaskListAdapter(Context context) {
+    public TaskProjectonsListAdapter(Context context) {
         this.context = context;
     }
 
-    public boolean addAll(Collection<? extends Task> collection) {
+    public boolean addAll(Collection<? extends TaskProjection> collection) {
         boolean ret = list.addAll(collection);
         notifyDataSetChanged();
         return ret;
@@ -43,7 +42,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
         list.clear();
     }
 
-    public Task get(int index) {
+    public TaskProjection get(int index) {
         return list.get(index);
     }
 
@@ -78,26 +77,26 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
         @Bind(R.id.time)
         TextView timeView;
         @Bind(R.id.status)
-        ImageView statusView;
+        TextView statusView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindData(Task task) {
-            customerView.setText(task.getCustomer());
-            projectView.setText(task.getProject());
-            if (task.hasParent()) {
+        public void bindData(TaskProjection taskProjection) {
+            customerView.setText(taskProjection.getCustomer());
+            projectView.setText(taskProjection.getProject());
+            if (taskProjection.hasParent()) {
                 parentTaskView.setVisibility(View.VISIBLE);
-                parentTaskView.setText(task.getParent().getName());
+                parentTaskView.setText(taskProjection.getParent().getName());
             } else {
                 parentTaskView.setVisibility(View.GONE);
             }
-            nameView.setText(task.getName());
-            showDate(task.getBegin());
-            showTime(task.getBegin(), task.getEnd());
-            statusView.setImageResource(task.getStatus().getDrawableResourceId());
+            nameView.setText(taskProjection.getName());
+            showDate(taskProjection.getBegin());
+            showTime(taskProjection.getBegin(), taskProjection.getEnd());
+            statusView.setText(taskProjection.getStatus().getStringResourceId());
         }
 
         private void showDate(Date begin) {
