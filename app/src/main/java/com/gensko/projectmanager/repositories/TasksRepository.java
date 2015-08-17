@@ -4,6 +4,8 @@ import com.gensko.projectmanager.models.Status;
 import com.gensko.projectmanager.models.domain.Task;
 import com.gensko.projectmanager.models.domain.TaskList;
 
+import java.util.Observable;
+
 /**
  * Created by Genovich V.V. on 17.08.2015.
  */
