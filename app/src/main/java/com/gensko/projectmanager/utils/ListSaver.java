@@ -2,6 +2,7 @@ package com.gensko.projectmanager.utils;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Environment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,7 @@ import java.util.List;
 /**
  * Created by Genovich V.V. on 17.08.2015.
  */
+@SuppressWarnings("DefaultFileTemplate")
 public abstract class ListSaver<Model> extends AsyncTask<Model, Void, String> {
     private String modelName;
     private Context context;
@@ -33,31 +35,53 @@ public abstract class ListSaver<Model> extends AsyncTask<Model, Void, String> {
         execute(data);
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     @SafeVarargs
     @Override
     protected final String doInBackground(Model... data) {
         JSONArray array = new JSONArray();
 
-        for (Model aData : data) array.put(createJsonFrom(aData));
+        for (Model model : data)
+            try {
+                array.put(createJsonFrom(model));
+            } catch (JSONException e) {
+                return e.toString();}
 
         JSONObject obj = new JSONObject();
 
         try {
             obj.put("data", array);
 
-            writeObjectTo(
-                    new File(context.getFilesDir(), modelName + ".json"),
-                    obj);
-        } catch (JSONException | IOException ignored) {}
+            File file =
+                    new File(
+                            Environment.getExternalStoragePublicDirectory(
+                                    Environment.DIRECTORY_DOWNLOADS),
+                            "ProjectManager");
 
-        return null;
+            if (!file.exists())
+                if (!file.mkdirs())
+                    return "can't create " + file.getPath();
+
+            file = new File(file, modelName + ".json");
+
+            writeObjectTo(file, obj);
+        } catch (JSONException | IOException e) {
+            return e.toString();
+        }
+
+        return obj.toString();
     }
 
-    protected abstract JSONObject createJsonFrom(Model model) throws IllegalAccessException, JSONException;
+    protected abstract JSONObject createJsonFrom(Model model) throws JSONException;
 
     private void writeObjectTo(File file, JSONObject obj) throws IOException {
         FileOutputStream stream = new FileOutputStream(file);
         OutputStreamWriter writer = new OutputStreamWriter(stream);
         writer.write(obj.toString());
+        writer.flush();
+        writer.close();
     }
 }

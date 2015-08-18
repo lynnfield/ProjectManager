@@ -47,7 +47,7 @@ public class TaskProjectionsListAdapter extends RecyclerView.Adapter<TaskProject
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewTypr) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.list_item_task_projection, viewGroup, false);
         return new ViewHolder(view);

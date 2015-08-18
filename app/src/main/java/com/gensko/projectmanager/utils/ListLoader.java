@@ -2,6 +2,7 @@ package com.gensko.projectmanager.utils;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Environment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,9 +29,18 @@ public abstract class ListLoader<Model> extends AsyncTask<Void, Model, String> {
         execute();
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     @Override
     protected String doInBackground(Void... nothing) {
-        File file = new File(context.getFilesDir(), modelName + ".json");
+        File file = new File(
+                Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DOWNLOADS),
+                "ProjectManager");
+
+        file = new File(file, modelName + ".json");
 
         if (!file.exists())
             return "File not exists " + file.getPath();
