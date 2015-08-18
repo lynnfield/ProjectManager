@@ -87,6 +87,7 @@ public class TasksActivity extends AppCompatActivity implements DialogInterface.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
+                taskNameView.setText("");
                 addTaskDialog.show();
                 return true;
         }
@@ -96,7 +97,9 @@ public class TasksActivity extends AppCompatActivity implements DialogInterface.
 
     @Override
     public void onClick(DialogInterface dialogInterface, int button) {
-        if (button == DialogInterface.BUTTON_POSITIVE && taskNameView != null) {
+        if (button == DialogInterface.BUTTON_POSITIVE &&
+                taskNameView != null &&
+                !taskNameView.getText().toString().isEmpty()) {
             Task task = new Task();
             task.setName(taskNameView.getText().toString());
             task.setStatus(Status.NEW);
