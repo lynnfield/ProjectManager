@@ -15,4 +15,5 @@
     <string name="date_placeholder">10/08/2015</string>
     <string name="time_placeholder">11:45 - 12:56</string>
     <string name="empty" />
+    <string name="title_activity_tasks">TasksActivity</string>
 </resources>

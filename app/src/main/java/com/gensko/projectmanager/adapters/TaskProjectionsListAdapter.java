@@ -24,11 +24,11 @@ import butterknife.ButterKnife;
  * Created by Lynnfield on 15.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public class TaskProjectonsListAdapter extends RecyclerView.Adapter<TaskProjectonsListAdapter.ViewHolder> {
+public class TaskProjectionsListAdapter extends RecyclerView.Adapter<TaskProjectionsListAdapter.ViewHolder> {
     private Context context;
     private TaskProjectionsList list = new TaskProjectionsList();
 
-    public TaskProjectonsListAdapter(Context context) {
+    public TaskProjectionsListAdapter(Context context) {
         this.context = context;
     }
 
@@ -49,7 +49,7 @@ public class TaskProjectonsListAdapter extends RecyclerView.Adapter<TaskProjecto
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewTypr) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.list_item_task, viewGroup, false);
+                .inflate(R.layout.list_item_task_projection, viewGroup, false);
         return new ViewHolder(view);
     }
 

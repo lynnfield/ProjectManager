@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.gensko.projectmanager.R;
-import com.gensko.projectmanager.adapters.TaskProjectonsListAdapter;
+import com.gensko.projectmanager.adapters.TaskProjectionsListAdapter;
 import com.gensko.projectmanager.models.Status;
 import com.gensko.projectmanager.models.TaskProjection;
 import com.gensko.projectmanager.models.TaskProjectionsList;
@@ -22,7 +22,7 @@ public class TaskProjectionsListActivity extends AppCompatActivity {
     @Bind(R.id.list)
     RecyclerView taskListView;
 
-    private TaskProjectonsListAdapter adapter = new TaskProjectonsListAdapter(this);
+    private TaskProjectionsListAdapter adapter = new TaskProjectionsListAdapter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
