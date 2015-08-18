@@ -1,8 +1,14 @@
 package com.gensko.projectmanager.repositories;
 
+import android.content.Context;
+
 import com.gensko.projectmanager.models.Status;
 import com.gensko.projectmanager.models.domain.Task;
 import com.gensko.projectmanager.models.domain.TaskList;
+import com.gensko.projectmanager.utils.ListSaver;
+import com.gensko.projectmanager.utils.TaskListSaver;
+
+import org.json.JSONObject;
 
 import java.util.Observable;
 
@@ -38,5 +44,13 @@ public class TasksRepository {
 
     public void makeDone(Task task) {
         task.setStatus(Status.DONE);
+    }
+
+    public void save(Context context) {
+        if (tasks.size() > 0)
+                new TaskListSaver(context)
+                        .save(
+                                tasks.toArray(
+                                        new Task[tasks.size()]));
     }
 }

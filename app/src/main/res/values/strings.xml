@@ -16,4 +16,6 @@
     <string name="time_placeholder">11:45 - 12:56</string>
     <string name="empty" />
     <string name="title_activity_tasks">TasksActivity</string>
+    <string name="action_add">Add</string>
+    <string name="add_task">Add task</string>
 </resources>
