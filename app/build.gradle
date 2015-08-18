@@ -8,8 +8,8 @@ android {
         applicationId "com.gensko.projectmanager"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 1100021
-        versionName "0.1.1.21"
+        versionCode 1002009
+        versionName "0.1.2.9"
     }
     buildTypes {
         release {

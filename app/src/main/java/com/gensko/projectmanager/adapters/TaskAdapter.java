@@ -21,10 +21,12 @@ import butterknife.ButterKnife;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private Context context;
     private TaskList data = new TaskList();
+    private OnTaskClickListener listener;
 
-    public TaskAdapter(Context context, TaskList data) {
+    public TaskAdapter(Context context, TaskList data, OnTaskClickListener listener) {
         this.context = context;
         this.data = data;
+        this.listener = listener;
     }
 
     @Override
@@ -35,12 +37,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        viewHolder.bindData(data.get(position));
+        viewHolder.bindData(get(position), listener);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return get(position).getId();
     }
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public Task get(int position) {
+        return data.get(position);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -54,9 +65,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             ButterKnife.bind(this, view);
         }
 
-        public void bindData(Task task) {
+        public void bindData(final Task task, final OnTaskClickListener listener) {
             nameView.setText(task.getName());
             statusView.setText(task.getStatus().getStringResourceId());
+            this.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null)
+                        listener.onTaskClick(task);
+                }
+            });
         }
+    }
+
+    public static interface OnTaskClickListener {
+        void onTaskClick(Task task);
     }
 }

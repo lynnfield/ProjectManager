@@ -18,4 +18,6 @@
     <string name="title_activity_tasks">TasksActivity</string>
     <string name="action_add">Add</string>
     <string name="add_task">Add task</string>
+    <string name="edit_task">Edit task</string>
+    <string name="action_save">Save</string>
 </resources>
