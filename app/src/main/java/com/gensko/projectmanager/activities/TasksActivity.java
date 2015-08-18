@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.gensko.projectmanager.R;
 import com.gensko.projectmanager.adapters.TaskAdapter;
 import com.gensko.projectmanager.dialogs.CreateTaskDialog;
+import com.gensko.projectmanager.dialogs.DeleteTaskDialog;
 import com.gensko.projectmanager.dialogs.EditTaskDialog;
 import com.gensko.projectmanager.models.domain.Task;
 import com.gensko.projectmanager.observers.TaskRepositoryObserver;
@@ -20,8 +21,13 @@ import java.util.Observer;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TasksActivity extends AppCompatActivity implements TaskAdapter.OnTaskClickListener, CreateTaskDialog.OnTaskCreatedListener, EditTaskDialog.OnTaskEditedListener {
+public class TasksActivity
+        extends AppCompatActivity
+        implements TaskAdapter.OnTaskClickListener,
+        CreateTaskDialog.OnTaskCreatedListener,
+        EditTaskDialog.OnTaskEditedListener, DeleteTaskDialog.OnDeleteTaskListener {
     private EditTaskDialog editTaskDialog;
+    private DeleteTaskDialog deleteTaskDialog;
     private TaskAdapter adapter;
     private Observer observer;
 
@@ -36,6 +42,7 @@ public class TasksActivity extends AppCompatActivity implements TaskAdapter.OnTa
         ButterKnife.bind(this);
 
         editTaskDialog = new EditTaskDialog(this, this);
+        deleteTaskDialog = new DeleteTaskDialog(this, this);
         adapter = new TaskAdapter(this, TaskRepository.getInstance().getTasks(), this);
         observer = new TaskRepositoryObserver(adapter);
 
@@ -87,7 +94,20 @@ public class TasksActivity extends AppCompatActivity implements TaskAdapter.OnTa
     }
 
     @Override
+    public void onDeleteTask(Task task) {
+        TaskRepository.getInstance().remove(task);
+        TaskRepository.getInstance().save(this);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onTaskClick(Task task) {
         editTaskDialog.setTask(task).show();
+    }
+
+    @Override
+    public boolean onTaskLongClick(Task task) {
+        deleteTaskDialog.setTask(task).show();
+        return true;
     }
 }

@@ -68,11 +68,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         public void bindData(final Task task, final OnTaskClickListener listener) {
             nameView.setText(task.getName());
             statusView.setText(task.getStatus().getStringResourceId());
-            this.itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (listener != null)
                         listener.onTaskClick(task);
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    return listener != null && listener.onTaskLongClick(task);
                 }
             });
         }
@@ -80,5 +86,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     public static interface OnTaskClickListener {
         void onTaskClick(Task task);
+        boolean onTaskLongClick(Task task);
     }
 }

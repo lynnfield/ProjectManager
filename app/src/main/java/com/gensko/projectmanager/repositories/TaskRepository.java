@@ -55,4 +55,8 @@ public class TaskRepository extends Observable {
             }
         }.load();
     }
+
+    public void remove(Task task) {
+        tasks.remove(task);
+    }
 }
