@@ -11,7 +11,7 @@ import org.json.JSONObject;
  * Created by Genovich V.V. on 18.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public abstract class TaskListLoader extends ListLoader<Task> {
+public class TaskListLoader extends ListLoader<Task> {
     public TaskListLoader(Context context) {
         super(context);
     }

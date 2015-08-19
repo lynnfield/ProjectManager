@@ -4,59 +4,56 @@ import android.content.Context;
 
 import com.gensko.projectmanager.models.domain.Task;
 import com.gensko.projectmanager.models.TaskList;
+import com.gensko.projectmanager.utils.ListLoader;
+import com.gensko.projectmanager.utils.ListSaver;
 import com.gensko.projectmanager.utils.TaskListLoader;
 import com.gensko.projectmanager.utils.TaskListSaver;
 
+import java.util.List;
 import java.util.Observable;
 
 /**
  * Created by Genovich V.V. on 17.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public class TaskRepository extends Observable {
+public class TaskRepository extends RecordRepository<Task> {
     private static final TaskRepository instance = new TaskRepository();
-    private static long ID = 0;
 
     public static TaskRepository getInstance() {
         return instance;
     }
 
-    private static long nextId() {
-        return ++ID;
-    }
-
-    private TaskList tasks = new TaskList();
-
     private TaskRepository() {}
 
-    public TaskList getTasks() {
-        return tasks;
+    @Override
+    protected List<Task> createNewList() {
+        return new TaskList();
     }
 
-    public long addTask(Task task) {
-        task.setId(nextId());
-        tasks.add(task);
-        return task.getId();
+    @Override
+    protected Task[] createNewArray(int size) {
+        return new Task[size];
     }
 
-    public void save(Context context) {
-        if (tasks.size() > 0)
-            new TaskListSaver(context)
-                    .save(tasks.toArray(new Task[tasks.size()]));
+    @Override
+    protected void save(ListSaver<Task> saver, Task[] data) {
+        TaskListSaver listSaver = (TaskListSaver) saver;
+        listSaver.save(data);
     }
 
-    public void load(Context context) {
-        new TaskListLoader(context) {
-            @Override
-            protected void modelLoaded(Task task) {
-                tasks.add(task);
-                setChanged();
-                notifyObservers();
-            }
-        }.load();
+    @Override
+    protected ListSaver<Task> createNewListSaver(Context context) {
+        return new TaskListSaver(context);
     }
 
-    public void remove(Task task) {
-        tasks.remove(task);
+    @Override
+    protected void load(ListLoader<Task> loader) {
+        TaskListLoader listLoader = (TaskListLoader) loader;
+        listLoader.load();
+    }
+
+    @Override
+    protected ListLoader<Task> createNewListLoader(Context context) {
+        return new TaskListLoader(context);
     }
 }

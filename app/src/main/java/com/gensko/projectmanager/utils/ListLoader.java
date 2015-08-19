@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
 
+import com.gensko.projectmanager.models.domain.Record;
+import com.gensko.projectmanager.repositories.RecordRepository;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,9 +19,10 @@ import java.io.InputStreamReader;
 /**
  * Created by Genovich V.V. on 17.08.2015.
  */
-public abstract class ListLoader<Model> extends AsyncTask<Void, Model, String> {
+public abstract class ListLoader<Model extends Record> extends AsyncTask<Void, Model, String> {
     private String modelName;
     private Context context;
+    private OnModelLoadedListener<Model> listener;
 
     public ListLoader(Context context) {
         this.context = context;
@@ -63,10 +67,9 @@ public abstract class ListLoader<Model> extends AsyncTask<Void, Model, String> {
     @SafeVarargs
     @Override
     protected final void onProgressUpdate(Model... values) {
-        modelLoaded(values[0]);
+        if (listener != null)
+            listener.onModelLoaded(values[0]);
     }
-
-    protected abstract void modelLoaded(Model model);
 
     protected abstract Model parse(JSONObject obj) throws JSONException;
 
@@ -79,5 +82,13 @@ public abstract class ListLoader<Model> extends AsyncTask<Void, Model, String> {
             while (reader.read(buff) > 0)
                 builder.append(buff);
         return new JSONObject(builder.toString());
+    }
+
+    public void setModelLoadedListener(OnModelLoadedListener<Model> listener) {
+        this.listener = listener;
+    }
+
+    public interface OnModelLoadedListener<Model extends Record> {
+        void onModelLoaded(Model model);
     }
 }
