@@ -6,15 +6,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.gensko.projectmanager.R;
 import com.gensko.projectmanager.adapters.TaskAdapter;
 import com.gensko.projectmanager.dialogs.CreateTaskDialog;
 import com.gensko.projectmanager.dialogs.DeleteTaskDialog;
 import com.gensko.projectmanager.dialogs.EditTaskDialog;
+import com.gensko.projectmanager.models.TaskList;
+import com.gensko.projectmanager.models.domain.Status;
 import com.gensko.projectmanager.models.domain.Task;
+import com.gensko.projectmanager.models.domain.TaskStateChange;
 import com.gensko.projectmanager.observers.TaskRepositoryObserver;
 import com.gensko.projectmanager.repositories.TaskRepository;
+import com.gensko.projectmanager.repositories.TaskStateChangeRepository;
+import com.gensko.projectmanager.utils.ListSaver;
 
 import java.util.Observer;
 
@@ -30,6 +36,7 @@ public class TasksActivity
     private DeleteTaskDialog deleteTaskDialog;
     private TaskAdapter adapter;
     private Observer observer;
+    private Status preEditTaskStatus;
 
     @Bind(R.id.list)
     RecyclerView listView;
@@ -43,7 +50,7 @@ public class TasksActivity
 
         editTaskDialog = new EditTaskDialog(this, this);
         deleteTaskDialog = new DeleteTaskDialog(this, this);
-        adapter = new TaskAdapter(this, TaskRepository.getInstance().getTasks(), this);
+        adapter = new TaskAdapter(this, (TaskList) TaskRepository.getInstance().getData(), this);
         observer = new TaskRepositoryObserver(adapter);
 
         listView.setLayoutManager(new LinearLayoutManager(this));
@@ -82,26 +89,32 @@ public class TasksActivity
 
     @Override
     public void onTaskCreated(Task task) {
-        TaskRepository.getInstance().addTask(task);
-        TaskRepository.getInstance().save(this);
+        TaskRepository.getInstance().add(task);
+        TaskRepository.getInstance().save();
         adapter.notifyDataSetChanged();
+        onTaskStatusChanged(task, Status.NULL);
     }
 
     @Override
     public void onTaskEdited(Task task) {
-        TaskRepository.getInstance().save(TasksActivity.this);
+        TaskRepository.getInstance().save();
         adapter.notifyDataSetChanged();
+        if (!task.getStatus().equals(preEditTaskStatus))
+            onTaskStatusChanged(task, preEditTaskStatus);
     }
 
     @Override
     public void onDeleteTask(Task task) {
         TaskRepository.getInstance().remove(task);
-        TaskRepository.getInstance().save(this);
+        TaskRepository.getInstance().save();
         adapter.notifyDataSetChanged();
+        TaskStateChangeRepository.getInstance().onTaskRemoved(task);
+        TaskStateChangeRepository.getInstance().save();
     }
 
     @Override
     public void onTaskClick(Task task) {
+        preEditTaskStatus = task.getStatus();
         editTaskDialog.setTask(task).show();
     }
 
@@ -109,5 +122,14 @@ public class TasksActivity
     public boolean onTaskLongClick(Task task) {
         deleteTaskDialog.setTask(task).show();
         return true;
+    }
+
+    private void onTaskStatusChanged(Task task, Status oldStatus) {
+        TaskStateChange change = new TaskStateChange();
+        change.setTaskId(task.getId());
+        change.setOldStatus(oldStatus);
+        change.setNewStatus(task.getStatus());
+        TaskStateChangeRepository.getInstance().add(change);
+        TaskStateChangeRepository.getInstance().save();
     }
 }

@@ -4,6 +4,9 @@ package com.gensko.projectmanager.models.domain;
  * Created by Genovich V.V. on 17.08.2015.
  */
 public class Task extends Record {
+    public static final String NAME_FIELD = "Name";
+    public static final String STATUS_FIELD = "Status";
+
     private String name = "";
     private Status status = Status.NULL;
 

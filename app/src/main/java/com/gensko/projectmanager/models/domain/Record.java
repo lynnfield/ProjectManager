@@ -5,6 +5,8 @@ package com.gensko.projectmanager.models.domain;
  */
 @SuppressWarnings("DefaultFileTemplate")
 public class Record {
+    public static final String ID_FIELD = "Id";
+
     public static Record NULL = new Record();
 
     private long Id = 0;

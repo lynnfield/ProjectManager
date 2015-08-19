@@ -1,6 +1,14 @@
 package com.gensko.projectmanager;
 
+import android.os.Environment;
+import android.widget.Toast;
+
 import com.gensko.projectmanager.repositories.TaskRepository;
+import com.gensko.projectmanager.repositories.TaskStateChangeRepository;
+import com.gensko.projectmanager.utils.ListLoader;
+import com.gensko.projectmanager.utils.ListSaver;
+
+import java.io.File;
 
 /**
  * Created by Genovich V.V. on 17.08.2015.
@@ -11,7 +19,23 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
-        TaskRepository.getInstance().load(this);
+        File dataDir =
+                new File(
+                        Environment.getExternalStoragePublicDirectory(
+                                Environment.DIRECTORY_DOWNLOADS),
+                        "ProjectManager");
+
+        if (!dataDir.exists())
+            if (!dataDir.mkdirs()) {
+                Toast.makeText(this, R.string.can_not_create_data_dir, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+        ListSaver.init(dataDir);
+        ListLoader.init(dataDir);
+
+        TaskRepository.getInstance().load();
+        TaskStateChangeRepository.getInstance().load();
     }
 
     @Override

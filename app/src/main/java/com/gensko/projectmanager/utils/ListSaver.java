@@ -23,20 +23,16 @@ import java.util.List;
  */
 @SuppressWarnings("DefaultFileTemplate")
 public abstract class ListSaver<Model> extends AsyncTask<Model, Void, String> {
+    private static File destinationDir;
     private String modelName;
-    private Context context;
 
-    public ListSaver(Context context) {
-        this.context = context;
+    public static void init(File destinationDir) {
+        ListSaver.destinationDir = destinationDir;
     }
 
     public void save(String modelName, Model[] data) {
         this.modelName = modelName;
         execute(data);
-    }
-
-    public Context getContext() {
-        return context;
     }
 
     @SafeVarargs
@@ -55,17 +51,7 @@ public abstract class ListSaver<Model> extends AsyncTask<Model, Void, String> {
         try {
             obj.put("data", array);
 
-            File file =
-                    new File(
-                            Environment.getExternalStoragePublicDirectory(
-                                    Environment.DIRECTORY_DOWNLOADS),
-                            "ProjectManager");
-
-            if (!file.exists())
-                if (!file.mkdirs())
-                    return "can't create " + file.getPath();
-
-            file = new File(file, modelName + ".json");
+            File file = new File(destinationDir, modelName + ".json");
 
             writeObjectTo(file, obj);
         } catch (JSONException | IOException e) {

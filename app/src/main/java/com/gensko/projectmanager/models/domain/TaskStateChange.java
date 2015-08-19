@@ -7,6 +7,13 @@ import java.util.Calendar;
  */
 @SuppressWarnings("DefaultFileTemplate")
 public class TaskStateChange extends Record {
+    public static final String TASK_ID_FIELD = "TaskId";
+    public static final String OLD_STATE_FIELD = "OldState";
+    public static final String NEW_STATE_FIELD = "NewState";
+    public static final String TIME_FIELD = "Time";
+
+    public static TaskStateChange NULL = new TaskStateChange();
+
     private long taskId = -1;
     private Status oldStatus = Status.NULL;
     private Status newStatus = Status.NULL;

@@ -19,11 +19,7 @@ import java.util.Locale;
 @SuppressWarnings("DefaultFileTemplate")
 public class TaskStateChangeListLoader extends ListLoader<TaskStateChange> {
     private DateFormat formatter =
-            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault());
-
-    public TaskStateChangeListLoader(Context context) {
-        super(context);
-    }
+            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
 
     public void load() {
         load("TaskStateChange");
@@ -32,15 +28,19 @@ public class TaskStateChangeListLoader extends ListLoader<TaskStateChange> {
     @Override
     protected TaskStateChange parse(JSONObject obj) throws JSONException {
         TaskStateChange ret = new TaskStateChange();
-        ret.setId(obj.getLong("Id"));
-        ret.setTaskId(obj.getLong("TaskId"));
+        ret.setId(obj.getLong(TaskStateChange.ID_FIELD));
+        ret.setTaskId(obj.getLong(TaskStateChange.TASK_ID_FIELD));
         ret.setOldStatus(
-                com.gensko.projectmanager.models.domain.Status.valueOf(obj.getString("OldStatus")));
+                com.gensko.projectmanager.models.domain.Status.valueOf(
+                        obj.getString(TaskStateChange.OLD_STATE_FIELD)));
         ret.setNewStatus(
-                com.gensko.projectmanager.models.domain.Status.valueOf(obj.getString("NewStatus")));
+                com.gensko.projectmanager.models.domain.Status.valueOf(
+                        obj.getString(TaskStateChange.NEW_STATE_FIELD)));
         try {
             Calendar time = Calendar.getInstance();
-            time.setTime(formatter.parse(obj.getString("Time")));
+            time.setTime(
+                    formatter.parse(
+                            obj.getString(TaskStateChange.TIME_FIELD)));
             ret.setTime(time);
         } catch (ParseException ignored) {}
         return ret;

@@ -26,6 +26,11 @@ public class TaskRepository extends RecordRepository<Task> {
     private TaskRepository() {}
 
     @Override
+    protected boolean isEquals(Task item, Object object) {
+        return false;
+    }
+
+    @Override
     protected List<Task> createNewList() {
         return new TaskList();
     }
@@ -42,8 +47,8 @@ public class TaskRepository extends RecordRepository<Task> {
     }
 
     @Override
-    protected ListSaver<Task> createNewListSaver(Context context) {
-        return new TaskListSaver(context);
+    protected ListSaver<Task> createNewListSaver() {
+        return new TaskListSaver();
     }
 
     @Override
@@ -53,7 +58,7 @@ public class TaskRepository extends RecordRepository<Task> {
     }
 
     @Override
-    protected ListLoader<Task> createNewListLoader(Context context) {
-        return new TaskListLoader(context);
+    protected ListLoader<Task> createNewListLoader() {
+        return new TaskListLoader();
     }
 }

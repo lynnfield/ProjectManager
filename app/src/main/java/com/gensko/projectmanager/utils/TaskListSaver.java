@@ -13,10 +13,6 @@ import org.json.JSONObject;
  */
 @SuppressWarnings("DefaultFileTemplate")
 public class TaskListSaver extends ListSaver<Task> {
-    public TaskListSaver(Context context) {
-        super(context);
-    }
-
     public void save(Task[] data) {
         super.save("Task", data);
     }

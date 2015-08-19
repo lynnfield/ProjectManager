@@ -20,12 +20,13 @@ import java.io.InputStreamReader;
  * Created by Genovich V.V. on 17.08.2015.
  */
 public abstract class ListLoader<Model extends Record> extends AsyncTask<Void, Model, String> {
+    private static File sourceDir;
+
     private String modelName;
-    private Context context;
     private OnModelLoadedListener<Model> listener;
 
-    public ListLoader(Context context) {
-        this.context = context;
+    public static void init(File sourceDir) {
+        ListLoader.sourceDir = sourceDir;
     }
 
     public void load(String modelName) {
@@ -33,18 +34,9 @@ public abstract class ListLoader<Model extends Record> extends AsyncTask<Void, M
         execute();
     }
 
-    public Context getContext() {
-        return context;
-    }
-
     @Override
     protected String doInBackground(Void... nothing) {
-        File file = new File(
-                Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOWNLOADS),
-                "ProjectManager");
-
-        file = new File(file, modelName + ".json");
+        File file = new File(sourceDir, modelName + ".json");
 
         if (!file.exists())
             return "File not exists " + file.getPath();

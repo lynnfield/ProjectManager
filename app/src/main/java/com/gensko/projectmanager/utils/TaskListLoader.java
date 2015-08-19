@@ -12,10 +12,6 @@ import org.json.JSONObject;
  */
 @SuppressWarnings("DefaultFileTemplate")
 public class TaskListLoader extends ListLoader<Task> {
-    public TaskListLoader(Context context) {
-        super(context);
-    }
-
     public void load() {
         super.load("Task");
     }
