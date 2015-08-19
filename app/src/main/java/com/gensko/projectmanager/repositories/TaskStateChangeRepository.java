@@ -6,6 +6,7 @@ import com.gensko.projectmanager.models.TaskStateChangeList;
 import com.gensko.projectmanager.models.domain.TaskStateChange;
 import com.gensko.projectmanager.utils.ListLoader;
 import com.gensko.projectmanager.utils.ListSaver;
+import com.gensko.projectmanager.utils.TaskStateChangeListLoader;
 import com.gensko.projectmanager.utils.TaskStateChangeListSaver;
 
 import java.util.List;
@@ -47,11 +48,12 @@ public class TaskStateChangeRepository extends RecordRepository<TaskStateChange>
 
     @Override
     protected void load(ListLoader<TaskStateChange> loader) {
-
+        TaskStateChangeListLoader listLoader = (TaskStateChangeListLoader) loader;
+        listLoader.load();
     }
 
     @Override
     protected ListLoader<TaskStateChange> createNewListLoader(Context context) {
-        return null;
+        return new TaskStateChangeListLoader(context);
     }
 }
