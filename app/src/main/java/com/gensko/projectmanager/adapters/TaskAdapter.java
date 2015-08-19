@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.gensko.projectmanager.R;
 import com.gensko.projectmanager.models.domain.Task;
-import com.gensko.projectmanager.models.domain.TaskList;
+import com.gensko.projectmanager.models.TaskList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

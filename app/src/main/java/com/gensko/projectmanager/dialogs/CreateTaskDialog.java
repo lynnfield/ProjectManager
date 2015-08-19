@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.gensko.projectmanager.R;
-import com.gensko.projectmanager.models.Status;
+import com.gensko.projectmanager.models.domain.Status;
 import com.gensko.projectmanager.models.domain.Task;
 
 import butterknife.ButterKnife;

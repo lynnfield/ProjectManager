@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.gensko.projectmanager.models.Status;
+import com.gensko.projectmanager.models.domain.Status;
 
 /**
  * Created by Genovich V.V. on 18.08.2015.

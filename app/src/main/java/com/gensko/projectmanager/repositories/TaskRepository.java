@@ -3,7 +3,7 @@ package com.gensko.projectmanager.repositories;
 import android.content.Context;
 
 import com.gensko.projectmanager.models.domain.Task;
-import com.gensko.projectmanager.models.domain.TaskList;
+import com.gensko.projectmanager.models.TaskList;
 import com.gensko.projectmanager.utils.TaskListLoader;
 import com.gensko.projectmanager.utils.TaskListSaver;
 

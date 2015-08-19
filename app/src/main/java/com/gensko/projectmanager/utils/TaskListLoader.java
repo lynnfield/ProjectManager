@@ -1,7 +1,6 @@
 package com.gensko.projectmanager.utils;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.gensko.projectmanager.models.domain.Task;
 
@@ -26,7 +25,7 @@ public abstract class TaskListLoader extends ListLoader<Task> {
         Task task = new Task();
         task.setId(obj.getLong("Id"));
         task.setName(obj.getString("Name"));
-        task.setStatus(com.gensko.projectmanager.models.Status.valueOf(obj.getString("Status")));
+        task.setStatus(com.gensko.projectmanager.models.domain.Status.valueOf(obj.getString("Status")));
         return task;
     }
 }

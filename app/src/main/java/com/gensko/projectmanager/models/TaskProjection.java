@@ -1,5 +1,8 @@
 package com.gensko.projectmanager.models;
 
+import com.gensko.projectmanager.models.domain.Record;
+import com.gensko.projectmanager.models.domain.Status;
+
 import java.util.Date;
 
 /**

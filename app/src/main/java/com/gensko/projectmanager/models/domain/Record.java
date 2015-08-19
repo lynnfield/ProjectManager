@@ -1,4 +1,4 @@
-package com.gensko.projectmanager.models;
+package com.gensko.projectmanager.models.domain;
 
 /**
  * Created by Lynnfield on 14.08.2015.

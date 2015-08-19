@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.gensko.projectmanager.R;
 import com.gensko.projectmanager.adapters.TaskProjectionsListAdapter;
-import com.gensko.projectmanager.models.Status;
+import com.gensko.projectmanager.models.domain.Status;
 import com.gensko.projectmanager.models.TaskProjection;
 import com.gensko.projectmanager.models.TaskProjectionsList;
 

@@ -10,7 +10,7 @@ import android.widget.Spinner;
 
 import com.gensko.projectmanager.R;
 import com.gensko.projectmanager.adapters.StatusAdapter;
-import com.gensko.projectmanager.models.Status;
+import com.gensko.projectmanager.models.domain.Status;
 import com.gensko.projectmanager.models.domain.Task;
 
 import butterknife.Bind;

@@ -1,4 +1,4 @@
-package com.gensko.projectmanager.models;
+package com.gensko.projectmanager.models.domain;
 
 import com.gensko.projectmanager.R;
 
