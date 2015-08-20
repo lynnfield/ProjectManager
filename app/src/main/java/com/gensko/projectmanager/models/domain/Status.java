@@ -29,6 +29,17 @@ public enum Status {
             return R.drawable.ic_assignment_ind_black_48dp;
         }
     },
+    PAUSED {
+        @Override
+        public int getStringResourceId() {
+            return R.string.status_paused;
+        }
+
+        @Override
+        public int getDrawableResourceId() {
+            return R.drawable.ic_assignment_returned_black_48dp;
+        }
+    },
     DONE {
         @Override
         public int getStringResourceId() {

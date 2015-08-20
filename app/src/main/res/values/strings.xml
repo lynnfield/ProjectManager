@@ -24,4 +24,5 @@
     <string name="delete_task_confirmation_message">Are you sure?</string>
     <string name="action_delete">Delete</string>
     <string name="can_not_create_data_dir">Can\'t create data directory</string>
+    <string name="status_paused">Paused</string>
 </resources>
