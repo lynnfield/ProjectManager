@@ -12,17 +12,32 @@ public enum Status {
         public int getStringResourceId() {
             return R.string.status_new;
         }
+
+        @Override
+        public int getDrawableResourceId() {
+            return R.drawable.ic_assignment_black_48dp;
+        }
     },
     STARTED {
         @Override
         public int getStringResourceId() {
             return R.string.status_started;
         }
+
+        @Override
+        public int getDrawableResourceId() {
+            return R.drawable.ic_assignment_ind_black_48dp;
+        }
     },
     DONE {
         @Override
         public int getStringResourceId() {
             return R.string.status_done;
+        }
+
+        @Override
+        public int getDrawableResourceId() {
+            return R.drawable.ic_assignment_turned_in_black_48dp;
         }
     },
     NULL;
