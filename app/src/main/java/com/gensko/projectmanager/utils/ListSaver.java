@@ -63,7 +63,7 @@ public abstract class ListSaver<Model> extends AsyncTask<Model, Void, String> {
 
     protected abstract JSONObject createJsonFrom(Model model) throws JSONException;
 
-    private void writeObjectTo(File file, JSONObject obj) throws IOException {
+    private void writeObjectTo(File file, JSONObject obj) throws IOException, JSONException {
         FileOutputStream stream = new FileOutputStream(file);
         OutputStreamWriter writer = new OutputStreamWriter(stream);
         writer.write(obj.toString());
