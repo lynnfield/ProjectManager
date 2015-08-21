@@ -25,4 +25,7 @@
     <string name="action_delete">Delete</string>
     <string name="can_not_create_data_dir">Can\'t create data directory</string>
     <string name="status_paused">Paused</string>
+    <string name="status_icon">status icon</string>
+    <string name="task_name_placeholder">task name</string>
+    <string name="time_range_placeholder">11:43 - 15:21</string>
 </resources>

@@ -3,6 +3,8 @@ package com.gensko.projectmanager;
 import android.os.Environment;
 import android.widget.Toast;
 
+import com.gensko.projectmanager.models.domain.TaskStateChange;
+import com.gensko.projectmanager.observers.TimedTaskCreator;
 import com.gensko.projectmanager.repositories.TaskRepository;
 import com.gensko.projectmanager.repositories.TaskStateChangeRepository;
 import com.gensko.projectmanager.utils.ListLoader;
@@ -33,6 +35,11 @@ public class Application extends android.app.Application {
 
         ListSaver.init(dataDir);
         ListLoader.init(dataDir);
+
+        TimedTaskCreator creator = new TimedTaskCreator();
+
+        TaskRepository.getInstance().addObserver(creator);
+        TaskStateChangeRepository.getInstance().addObserver(creator);
 
         TaskRepository.getInstance().load();
         TaskStateChangeRepository.getInstance().load();

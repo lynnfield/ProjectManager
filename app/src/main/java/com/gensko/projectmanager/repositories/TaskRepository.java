@@ -2,8 +2,10 @@ package com.gensko.projectmanager.repositories;
 
 import android.content.Context;
 
+import com.gensko.projectmanager.models.TimedTask;
 import com.gensko.projectmanager.models.domain.Task;
 import com.gensko.projectmanager.models.TaskList;
+import com.gensko.projectmanager.models.domain.TaskStateChange;
 import com.gensko.projectmanager.utils.ListLoader;
 import com.gensko.projectmanager.utils.ListSaver;
 import com.gensko.projectmanager.utils.TaskListLoader;
@@ -26,8 +28,11 @@ public class TaskRepository extends RecordRepository<Task> {
     private TaskRepository() {}
 
     @Override
-    protected boolean isEquals(Task item, Object object) {
-        return false;
+    protected boolean isSame(Task item, Object object) {
+        if (object instanceof TaskStateChange)
+            return ((TaskStateChange)object).getTaskId() == item.getId();
+
+        return item.equals(object);
     }
 
     @Override

@@ -6,10 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.gensko.projectmanager.R;
-import com.gensko.projectmanager.adapters.TaskAdapter;
+import com.gensko.projectmanager.adapters.TaskListAdapter;
+import com.gensko.projectmanager.adapters.TimedTaskListAdapter;
+import com.gensko.projectmanager.adapters.holders.TaskViewHolder;
 import com.gensko.projectmanager.dialogs.CreateTaskDialog;
 import com.gensko.projectmanager.dialogs.DeleteTaskDialog;
 import com.gensko.projectmanager.dialogs.EditTaskDialog;
@@ -20,7 +21,6 @@ import com.gensko.projectmanager.models.domain.TaskStateChange;
 import com.gensko.projectmanager.observers.TaskRepositoryObserver;
 import com.gensko.projectmanager.repositories.TaskRepository;
 import com.gensko.projectmanager.repositories.TaskStateChangeRepository;
-import com.gensko.projectmanager.utils.ListSaver;
 
 import java.util.Observer;
 
@@ -29,12 +29,12 @@ import butterknife.ButterKnife;
 
 public class TasksActivity
         extends AppCompatActivity
-        implements TaskAdapter.OnTaskClickListener,
+        implements TaskViewHolder.OnTaskClickListener,
         CreateTaskDialog.OnTaskCreatedListener,
         EditTaskDialog.OnTaskEditedListener, DeleteTaskDialog.OnDeleteTaskListener {
     private EditTaskDialog editTaskDialog;
     private DeleteTaskDialog deleteTaskDialog;
-    private TaskAdapter adapter;
+    private TaskListAdapter adapter;
     private Observer observer;
     private Status preEditTaskStatus;
 
@@ -50,7 +50,7 @@ public class TasksActivity
 
         editTaskDialog = new EditTaskDialog(this, this);
         deleteTaskDialog = new DeleteTaskDialog(this, this);
-        adapter = new TaskAdapter(this, (TaskList) TaskRepository.getInstance().getData(), this);
+        adapter = new TimedTaskListAdapter(this, (TaskList) TaskRepository.getInstance().getData(), this);
         observer = new TaskRepositoryObserver(adapter);
 
         listView.setLayoutManager(new LinearLayoutManager(this));
@@ -91,7 +91,6 @@ public class TasksActivity
     public void onTaskCreated(Task task) {
         TaskRepository.getInstance().add(task);
         TaskRepository.getInstance().save();
-        adapter.notifyDataSetChanged();
         onTaskStatusChanged(task, Status.NULL);
     }
 
@@ -107,7 +106,6 @@ public class TasksActivity
     public void onDeleteTask(Task task) {
         TaskRepository.getInstance().remove(task);
         TaskRepository.getInstance().save();
-        adapter.notifyDataSetChanged();
         TaskStateChangeRepository.getInstance().onTaskRemoved(task);
         TaskStateChangeRepository.getInstance().save();
     }

@@ -28,6 +28,10 @@ public class TimedTaskViewHolder extends TaskViewHolder {
         ButterKnife.bind(this, view);
     }
 
+    public TimedTaskViewHolder(TaskViewHolder holder) {
+        this(holder.itemView);
+    }
+
     public void bindData(TimedTask task, OnTaskClickListener listener) {
         super.bindData(task, listener);
         String time;

@@ -13,6 +13,8 @@ import com.gensko.projectmanager.adapters.holders.TaskViewHolder;
 import com.gensko.projectmanager.models.domain.Task;
 import com.gensko.projectmanager.models.TaskList;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -20,12 +22,21 @@ import butterknife.ButterKnife;
  * Created by Genovich V.V. on 17.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
+public class TaskListAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     private Context context;
-    private TaskList data = new TaskList();
+    private List<Task> data = new TaskList();
     private TaskViewHolder.OnTaskClickListener listener;
 
-    public TaskAdapter(
+    public TaskListAdapter(Context context) {
+        this.context = context;
+    }
+
+    public TaskListAdapter(Context context, TaskViewHolder.OnTaskClickListener listener) {
+        this.context = context;
+        this.listener = listener;
+    }
+
+    public TaskListAdapter(
             Context context,
             TaskList data,
             TaskViewHolder.OnTaskClickListener listener) {
@@ -34,9 +45,45 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         this.listener = listener;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
+    public List<Task> getData() {
+        return data;
+    }
+
+    public TaskViewHolder.OnTaskClickListener getListener() {
+        return listener;
+    }
+
+    public void setListener(TaskViewHolder.OnTaskClickListener listener) {
+        this.listener = listener;
+    }
+
+    public Task get(int position) {
+        return data.get(position);
+    }
+
+    public void setData(List<Task> data) {
+        this.data = data;
+        notifyDataSetChanged();
+    }
+
+    public boolean add(Task task) {
+        boolean ret = data.add(task);
+        notifyDataSetChanged();
+        return ret;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return R.layout.list_item_task;
+    }
+
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout., viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(viewType, viewGroup, false);
         return new TaskViewHolder(view);
     }
 
@@ -53,9 +100,5 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     @Override
     public int getItemCount() {
         return data.size();
-    }
-
-    public Task get(int position) {
-        return data.get(position);
     }
 }

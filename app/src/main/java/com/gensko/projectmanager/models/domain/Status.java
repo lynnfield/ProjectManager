@@ -17,6 +17,16 @@ public enum Status {
         public int getDrawableResourceId() {
             return R.drawable.ic_assignment_black_48dp;
         }
+
+        @Override
+        public boolean isBegin() {
+            return true;
+        }
+
+        @Override
+        public boolean isEnd() {
+            return false;
+        }
     },
     STARTED {
         @Override
@@ -27,6 +37,16 @@ public enum Status {
         @Override
         public int getDrawableResourceId() {
             return R.drawable.ic_assignment_ind_black_48dp;
+        }
+
+        @Override
+        public boolean isBegin() {
+            return true;
+        }
+
+        @Override
+        public boolean isEnd() {
+            return false;
         }
     },
     PAUSED {
@@ -39,6 +59,16 @@ public enum Status {
         public int getDrawableResourceId() {
             return R.drawable.ic_assignment_returned_black_48dp;
         }
+
+        @Override
+        public boolean isBegin() {
+            return false;
+        }
+
+        @Override
+        public boolean isEnd() {
+            return true;
+        }
     },
     DONE {
         @Override
@@ -50,14 +80,41 @@ public enum Status {
         public int getDrawableResourceId() {
             return R.drawable.ic_assignment_turned_in_black_48dp;
         }
+
+        @Override
+        public boolean isBegin() {
+            return false;
+        }
+
+        @Override
+        public boolean isEnd() {
+            return true;
+        }
     },
-    NULL;
+    NULL {
+        @Override
+        public int getStringResourceId() {
+            return R.string.empty;
+        }
 
-    public int getStringResourceId() {
-        return R.string.empty;
-    }
+        @Override
+        public int getDrawableResourceId() {
+            return R.mipmap.ic_launcher;
+        }
 
-    public int getDrawableResourceId() {
-        return R.mipmap.ic_launcher;
-    }
+        @Override
+        public boolean isBegin() {
+            return false;
+        }
+
+        @Override
+        public boolean isEnd() {
+            return false;
+        }
+    };
+
+    public abstract int getStringResourceId();
+    public abstract int getDrawableResourceId();
+    public abstract boolean isBegin();
+    public abstract boolean isEnd();
 }

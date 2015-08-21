@@ -1,11 +1,8 @@
 package com.gensko.projectmanager.utils;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Environment;
 
 import com.gensko.projectmanager.models.domain.Record;
-import com.gensko.projectmanager.repositories.RecordRepository;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,11 +16,12 @@ import java.io.InputStreamReader;
 /**
  * Created by Genovich V.V. on 17.08.2015.
  */
+@SuppressWarnings("DefaultFileTemplate")
 public abstract class ListLoader<Model extends Record> extends AsyncTask<Void, Model, String> {
     private static File sourceDir;
 
     private String modelName;
-    private OnModelLoadedListener<Model> listener;
+    private OnLoaderEventsListener<Model> listener;
 
     public static void init(File sourceDir) {
         ListLoader.sourceDir = sourceDir;
@@ -51,7 +49,9 @@ public abstract class ListLoader<Model extends Record> extends AsyncTask<Void, M
                 publishProgress(model);
             }
 
-        } catch (IOException | JSONException ignored) {}
+        } catch (IOException | JSONException e) {
+            return e.toString();
+        }
 
         return "ok";
     }
@@ -61,6 +61,15 @@ public abstract class ListLoader<Model extends Record> extends AsyncTask<Void, M
     protected final void onProgressUpdate(Model... values) {
         if (listener != null)
             listener.onModelLoaded(values[0]);
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        if (listener != null)
+            if ("ok".equals(s))
+                listener.onDone();
+            else
+                listener.onError(s);
     }
 
     protected abstract Model parse(JSONObject obj) throws JSONException;
@@ -76,11 +85,13 @@ public abstract class ListLoader<Model extends Record> extends AsyncTask<Void, M
         return new JSONObject(builder.toString());
     }
 
-    public void setModelLoadedListener(OnModelLoadedListener<Model> listener) {
+    public void setModelLoadedListener(OnLoaderEventsListener<Model> listener) {
         this.listener = listener;
     }
 
-    public interface OnModelLoadedListener<Model extends Record> {
+    public interface OnLoaderEventsListener<Model extends Record> {
         void onModelLoaded(Model model);
+        void onDone();
+        void onError(String error);
     }
 }

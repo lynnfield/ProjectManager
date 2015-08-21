@@ -34,7 +34,7 @@ public class TaskStateChangeRepository extends RecordRepository<TaskStateChange>
     }
 
     @Override
-    protected boolean isEquals(TaskStateChange item, Object o) {
+    protected boolean isSame(TaskStateChange item, Object o) {
         return o instanceof Task && item.getTaskId() == ((Task) o).getId();
     }
 
