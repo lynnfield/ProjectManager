@@ -2,6 +2,7 @@ package com.gensko.projectmanager.observers;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.gensko.projectmanager.models.TimedTask;
 import com.gensko.projectmanager.models.domain.Task;
@@ -16,6 +17,7 @@ import java.util.Observer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -24,9 +26,26 @@ import java.util.concurrent.TimeUnit;
  */
 @SuppressWarnings("DefaultFileTemplate")
 public class TimedTaskCreator implements Observer {
-    private static final Handler handler = new Handler(Looper.getMainLooper());
-    private static final ThreadPoolExecutor executor =
-            new ThreadPoolExecutor(1, 4, 5, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+    private static final Handler handler;
+    private static final ThreadPoolExecutor executor;
+
+    static {
+        handler = new Handler(Looper.getMainLooper());
+        executor =
+                new ThreadPoolExecutor(
+                        1,
+                        4,
+                        5,
+                        TimeUnit.SECONDS,
+                        new LinkedBlockingQueue<Runnable>());
+        executor.setRejectedExecutionHandler(new RejectedExecutionHandler() {
+            @Override
+            public void rejectedExecution(Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
+                Log.e("ProjectManager", "execution rejected");
+            }
+        });
+    }
+
     private boolean taskRepositoryLoaded;
     private boolean taskStateChangeRepositoryLoaded;
     private boolean timedTasksCreated;
@@ -77,12 +96,7 @@ public class TimedTaskCreator implements Observer {
 
                 timedTask.addChange(data);
 
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        TaskRepository.getInstance().replace(task, timedTask);
-                    }
-                });
+                TaskRepository.getInstance().replace(task, timedTask);
             }
         });
     }

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.util.List;
 
 /**
@@ -40,11 +41,13 @@ public abstract class ListSaver<Model> extends AsyncTask<Model, Void, String> {
     protected final String doInBackground(Model... data) {
         JSONArray array = new JSONArray();
 
-        for (Model model : data)
+        for (Model model : data) {
             try {
                 array.put(createJsonFrom(model));
             } catch (JSONException e) {
-                return e.toString();}
+                return e.toString();
+            }
+        }
 
         JSONObject obj = new JSONObject();
 

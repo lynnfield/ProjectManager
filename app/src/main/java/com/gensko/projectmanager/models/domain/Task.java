@@ -25,4 +25,9 @@ public class Task extends Record {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Task && ((Task)o).getId() == getId();
+    }
 }

@@ -10,6 +10,8 @@ import com.gensko.projectmanager.utils.TaskStateChangeComparator;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by Genovich V.V. on 20.0 8.2015.
@@ -58,8 +60,13 @@ public class TimedTask extends Task {
             computeBegin();
         else if (data.getNewStatus().isEnd())
             computeEnd();
-        if (changes.size() > 2)
+        if (changes.size() >= 2)
             computeTotal();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Task && super.equals(o);
     }
 
     private void computeBegin() {
@@ -86,8 +93,9 @@ public class TimedTask extends Task {
             if (current.getNewStatus().isBegin()) {
                 start = current.getTime();
             } else if (current.getNewStatus().isEnd() && start != null) {
-                Calendar total = current.getTime();
-                total.setTimeInMillis(total.getTimeInMillis() - start.getTimeInMillis());
+                Calendar total = Calendar.getInstance();
+                total.setTimeInMillis(
+                        current.getTime().getTimeInMillis() - start.getTimeInMillis());
                 if (getTotal() != null)
                     total.setTimeInMillis(total.getTimeInMillis() + getTotal().getTimeInMillis());
                 setTotal(total);

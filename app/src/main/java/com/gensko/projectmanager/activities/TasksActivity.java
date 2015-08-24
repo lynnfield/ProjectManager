@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 
 public class TasksActivity
         extends AppCompatActivity
-        implements TaskViewHolder.OnTaskClickListener,
+        implements TaskListAdapter.OnTaskClickListener,
         CreateTaskDialog.OnTaskCreatedListener,
         EditTaskDialog.OnTaskEditedListener, DeleteTaskDialog.OnDeleteTaskListener {
     private EditTaskDialog editTaskDialog;
@@ -97,7 +97,6 @@ public class TasksActivity
     @Override
     public void onTaskEdited(Task task) {
         TaskRepository.getInstance().save();
-        adapter.notifyDataSetChanged();
         if (!task.getStatus().equals(preEditTaskStatus))
             onTaskStatusChanged(task, preEditTaskStatus);
     }

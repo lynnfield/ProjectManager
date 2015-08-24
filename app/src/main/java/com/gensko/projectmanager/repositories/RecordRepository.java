@@ -4,6 +4,7 @@ import com.gensko.projectmanager.models.TimedTask;
 import com.gensko.projectmanager.models.domain.Record;
 import com.gensko.projectmanager.models.domain.Task;
 import com.gensko.projectmanager.models.domain.TaskStateChange;
+import com.gensko.projectmanager.utils.AsyncObservable;
 import com.gensko.projectmanager.utils.ListLoader;
 import com.gensko.projectmanager.utils.ListSaver;
 
@@ -15,7 +16,9 @@ import java.util.Observable;
  * Created by Genovich V.V. on 19.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public abstract class RecordRepository<Model extends Record> extends Observable implements ListLoader.OnLoaderEventsListener<Model> {
+public abstract class RecordRepository<Model extends Record>
+        extends AsyncObservable
+        implements ListLoader.OnLoaderEventsListener<Model> {
     private long id = 0l;
 
     private long nextId() {
@@ -32,7 +35,6 @@ public abstract class RecordRepository<Model extends Record> extends Observable 
         if (model.getId() == Record.NULL.getId())
             model.setId(nextId());
         data.add(model);
-        setChanged();
         notifyObservers(new Notification<>(Notification.State.ADD, model));
         return model.getId();
     }
@@ -41,23 +43,19 @@ public abstract class RecordRepository<Model extends Record> extends Observable 
         int position = data.indexOf(old);
         data.remove(position);
         data.add(position, model);
-        setChanged();
         notifyObservers(new Notification<>(Notification.State.REPLACE, old, model));
     }
 
     public boolean remove(Model model) {
         boolean ret = data.remove(model);
-        setChanged();
         notifyObservers(new Notification<>(Notification.State.REMOVE, model));
         return ret;
     }
 
     public boolean removeAll(List<Model> list) {
         boolean ret = data.removeAll(list);
-        if (ret) {
-            setChanged();
+        if (ret)
             notifyObservers(new Notification<>(Notification.State.REMOVE_SUBLIST));
-        }
         return ret;
     }
 
@@ -107,13 +105,11 @@ public abstract class RecordRepository<Model extends Record> extends Observable 
 
     @Override
     public void onDone() {
-        setChanged();
         notifyObservers(new Notification<>(Notification.State.LOADED));
     }
 
     @Override
     public void onError(String error) {
-        setChanged();
         notifyObservers(new Notification<>(Notification.State.LOADING_ERROR, error));
     }
 

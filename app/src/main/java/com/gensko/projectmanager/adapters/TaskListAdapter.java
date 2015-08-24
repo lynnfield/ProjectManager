@@ -25,13 +25,13 @@ import butterknife.ButterKnife;
 public class TaskListAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     private Context context;
     private List<Task> data = new TaskList();
-    private TaskViewHolder.OnTaskClickListener listener;
+    private OnTaskClickListener listener;
 
     public TaskListAdapter(Context context) {
         this.context = context;
     }
 
-    public TaskListAdapter(Context context, TaskViewHolder.OnTaskClickListener listener) {
+    public TaskListAdapter(Context context, OnTaskClickListener listener) {
         this.context = context;
         this.listener = listener;
     }
@@ -39,7 +39,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public TaskListAdapter(
             Context context,
             TaskList data,
-            TaskViewHolder.OnTaskClickListener listener) {
+            OnTaskClickListener listener) {
         this.context = context;
         this.data = data;
         this.listener = listener;
@@ -53,11 +53,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         return data;
     }
 
-    public TaskViewHolder.OnTaskClickListener getListener() {
+    public OnTaskClickListener getListener() {
         return listener;
     }
 
-    public void setListener(TaskViewHolder.OnTaskClickListener listener) {
+    public void setListener(OnTaskClickListener listener) {
         this.listener = listener;
     }
 
@@ -89,7 +89,22 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskViewHolder> {
 
     @Override
     public void onBindViewHolder(TaskViewHolder viewHolder, int position) {
-        viewHolder.bindData(get(position), listener);
+        final Task task = get(position);
+        viewHolder.nameView.setText(task.getName());
+        viewHolder.statusView.setImageResource(task.getStatus().getDrawableResourceId());
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null)
+                    listener.onTaskClick(task);
+            }
+        });
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return listener != null && listener.onTaskLongClick(task);
+            }
+        });
     }
 
     @Override
@@ -100,5 +115,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public static interface OnTaskClickListener {
+        void onTaskClick(Task task);
+        boolean onTaskLongClick(Task task);
     }
 }

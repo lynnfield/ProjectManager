@@ -17,35 +17,14 @@ import butterknife.ButterKnife;
 @SuppressWarnings("DefaultFileTemplate")
 public class TaskViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.name)
+    public
     TextView nameView;
     @Bind(R.id.status)
+    public
     ImageView statusView;
 
     public TaskViewHolder(View view) {
         super(view);
         ButterKnife.bind(this, view);
-    }
-
-    public void bindData(final Task task, final OnTaskClickListener listener) {
-        nameView.setText(task.getName());
-        statusView.setImageResource(task.getStatus().getDrawableResourceId());
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null)
-                    listener.onTaskClick(task);
-            }
-        });
-        itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                return listener != null && listener.onTaskLongClick(task);
-            }
-        });
-    }
-
-    public static interface OnTaskClickListener {
-        void onTaskClick(Task task);
-        boolean onTaskLongClick(Task task);
     }
 }

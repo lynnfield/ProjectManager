@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/time_range_placeholder"
-        android:id="@+id/textView"
+        android:id="@+id/time"
         android:layout_below="@+id/name"
         android:layout_toEndOf="@+id/status"
         android:layout_marginTop="2dp" />
