@@ -8,8 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.gensko.projectmanager.R;
-import com.gensko.projectmanager.models.domain.Status;
-import com.gensko.projectmanager.models.domain.Task;
+import com.gensko.projectmanager.models.Task;
 
 import butterknife.ButterKnife;
 
@@ -33,7 +32,6 @@ public class CreateTaskDialog {
                         !taskNameView.getText().toString().isEmpty()) {
                     Task task = new Task();
                     task.setName(taskNameView.getText().toString().trim());
-                    task.setStatus(Status.NEW);
                     listener.onTaskCreated(task);
                 } else
                     dialogInterface.cancel();

@@ -1,9 +1,6 @@
 package com.gensko.projectmanager.utils;
 
-import android.content.Context;
-import android.widget.Toast;
-
-import com.gensko.projectmanager.models.domain.Task;
+import com.gensko.projectmanager.models.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,9 +16,6 @@ public class TaskListSaver extends ListSaver<Task> {
 
     @Override
     protected JSONObject createJsonFrom(Task task) throws JSONException {
-        return new JSONObject()
-                .put("Id", task.getId())
-                .put("Name", task.getName())
-                .put("Status", task.getStatus().toString());
+        return task.toJson();
     }
 }

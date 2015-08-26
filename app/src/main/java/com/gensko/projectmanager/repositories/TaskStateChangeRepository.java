@@ -1,10 +1,8 @@
 package com.gensko.projectmanager.repositories;
 
-import android.content.Context;
-
 import com.gensko.projectmanager.models.TaskStateChangeList;
-import com.gensko.projectmanager.models.domain.Task;
-import com.gensko.projectmanager.models.domain.TaskStateChange;
+import com.gensko.projectmanager.models.Task;
+import com.gensko.projectmanager.models.TaskStateChange;
 import com.gensko.projectmanager.utils.ListLoader;
 import com.gensko.projectmanager.utils.ListSaver;
 import com.gensko.projectmanager.utils.TaskStateChangeListLoader;
@@ -12,7 +10,6 @@ import com.gensko.projectmanager.utils.TaskStateChangeListSaver;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Observable;
 
 /**
  * Created by Genovich V.V. on 19.08.2015.
@@ -71,7 +68,7 @@ public class TaskStateChangeRepository extends RecordRepository<TaskStateChange>
     }
 
     public void onTaskRemoved(Task task) {
-        TaskStateChangeList list = (TaskStateChangeList) findAllBy(task);
+        List<TaskStateChange> list = findAllBy(task);
         removeAll(list);
     }
 }

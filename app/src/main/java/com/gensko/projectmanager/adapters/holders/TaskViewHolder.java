@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gensko.projectmanager.R;
-import com.gensko.projectmanager.models.domain.Task;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

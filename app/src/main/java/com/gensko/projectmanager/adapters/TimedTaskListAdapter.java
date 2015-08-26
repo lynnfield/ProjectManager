@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import com.gensko.projectmanager.R;
 import com.gensko.projectmanager.adapters.holders.TaskViewHolder;
 import com.gensko.projectmanager.adapters.holders.TimedTaskViewHolder;
+import com.gensko.projectmanager.models.State;
 import com.gensko.projectmanager.models.TaskList;
 import com.gensko.projectmanager.models.TimedTask;
-import com.gensko.projectmanager.observers.TimedTaskCreator;
 import com.gensko.projectmanager.utils.Utils;
 
 import java.text.DateFormat;
@@ -68,25 +68,14 @@ public class TimedTaskListAdapter extends TaskListAdapter {
         super.onBindViewHolder(viewHolder, position);
         if (viewHolder instanceof TimedTaskViewHolder) {
             TimedTask task = (TimedTask) get(position);
-            String time;
-            switch (task.getStatus()) {
-                case NEW:
-                    time = getTimeString(task.getBegin());
-                    break;
-                case STARTED:
-                    time = getTimeString(task.getBegin());
-                    break;
-                case PAUSED:
-                    time = getTimeRange(task.getBegin(), task.getEnd());
-                    break;
-                case DONE:
-                    time = getTotal(task.getTotal());
-                    break;
-                case NULL:
-                default:
-                    time = "";
-                    break;
-            }
+            String time = "";
+            if (task.getState().isBegin())
+                time = getTimeString(task.getBegin());
+            else if (State.Paused.NAME.equals(task.getState().toString()))
+                time = getTimeRange(task.getBegin(), task.getEnd());
+            else if (State.Done.NAME.equals(task.getState().toString()))
+                time = getTotal(task.getTotal().getTime());
+
             ((TimedTaskViewHolder)viewHolder).timeView.setText(time);
         }
     }
@@ -116,32 +105,55 @@ public class TimedTaskListAdapter extends TaskListAdapter {
         return fromString + " - " + toString;
     }
 
-    private String getTotal(Calendar total) {
-        String ret;
-        ret = getField(total, Calendar.YEAR, " years");
-        ret += (" " + getField(total, Calendar.MONTH, " months"));
-        ret = ret.trim();
-        ret += (" " + getField(total, Calendar.DAY_OF_MONTH, " days"));
-        ret = ret.trim();
-        ret += (" " + getField(total, Calendar.HOUR_OF_DAY, " hours"));
-        ret = ret.trim();
-        ret += (" " + getField(total, Calendar.MINUTE, " minutes"));
-        ret = ret.trim();
-        ret += (" " + getField(total, Calendar.SECOND, " seconds"));
+    private Converter[] converters = {
+            new Converter(1000l, 60l, "seconds"),
+            new Converter(60l, 60l, "minutes"),
+            new Converter(60l, 24l, "hours"),
+            new Converter(24l, 7l, "weeks")
+    };
+
+    private String getTotal(long total) {
+        String ret = "";
+        long rounded;
+
+        for (Converter converter : converters) {
+            if (converter.check(total)) {
+                total = converter.convert(total);
+                rounded = converter.round(total);
+                if (rounded > 0l)
+                    ret = converter.asString(rounded) + " " + ret;
+            } else
+                break;
+        }
 
         return ret;
     }
 
-    private String getField(Calendar calendar, int field, String suffix) {
-        String ret = "";
-        int val = calendar.get(field);
+    private static class Converter {
+        private long step;
+        private long max;
+        private String suffix;
 
-        if (field == Calendar.YEAR || field == Calendar.HOUR_OF_DAY)
-            val -= NULL_CALENDAR.get(field);
+        private Converter(long step, long max, String suffix) {
+            this.step = step;
+            this.max = max;
+            this.suffix = suffix;
+        }
 
-        if (val > 0)
-            ret = val + suffix;
+        public boolean check(long val) {
+            return val >= step;
+        }
 
-        return ret;
+        public long convert(long val) {
+            return val / step;
+        }
+
+        public long round(long val) {
+            return val % max;
+        }
+
+        public String asString(long val) {
+            return val + " " + suffix;
+        }
     }
 }

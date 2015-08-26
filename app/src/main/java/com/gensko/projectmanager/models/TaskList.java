@@ -1,7 +1,5 @@
 package com.gensko.projectmanager.models;
 
-import com.gensko.projectmanager.models.domain.Task;
-
 import java.util.ArrayList;
 
 /**

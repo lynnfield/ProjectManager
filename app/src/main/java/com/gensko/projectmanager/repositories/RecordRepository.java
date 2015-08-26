@@ -1,16 +1,12 @@
 package com.gensko.projectmanager.repositories;
 
-import com.gensko.projectmanager.models.TimedTask;
-import com.gensko.projectmanager.models.domain.Record;
-import com.gensko.projectmanager.models.domain.Task;
-import com.gensko.projectmanager.models.domain.TaskStateChange;
+import com.gensko.projectmanager.models.Record;
 import com.gensko.projectmanager.utils.AsyncObservable;
 import com.gensko.projectmanager.utils.ListLoader;
 import com.gensko.projectmanager.utils.ListSaver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 /**
  * Created by Genovich V.V. on 19.08.2015.
@@ -54,8 +50,7 @@ public abstract class RecordRepository<Model extends Record>
 
     public boolean removeAll(List<Model> list) {
         boolean ret = data.removeAll(list);
-        if (ret)
-            notifyObservers(new Notification<>(Notification.State.REMOVE_SUBLIST));
+        if (ret) notifyObservers(new Notification<>(Notification.State.REMOVE_SUBLIST));
         return ret;
     }
 

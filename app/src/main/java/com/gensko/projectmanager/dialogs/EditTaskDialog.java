@@ -2,19 +2,18 @@ package com.gensko.projectmanager.dialogs;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import com.gensko.projectmanager.R;
-import com.gensko.projectmanager.adapters.StatusAdapter;
-import com.gensko.projectmanager.models.domain.Status;
-import com.gensko.projectmanager.models.domain.Task;
+import com.gensko.projectmanager.models.State;
+import com.gensko.projectmanager.models.Task;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Genovich V.V. on 18.08.2015.
@@ -23,11 +22,17 @@ import butterknife.ButterKnife;
 public class EditTaskDialog {
     @Bind(R.id.task_name)
     EditText taskNameView;
-    @Bind(R.id.task_status)
-    Spinner taskStatusView;
+    @Bind(R.id.action_start)
+    Button actionStart;
+    @Bind(R.id.action_pause)
+    Button actionPause;
+    @Bind(R.id.action_done)
+    Button actionDone;
 
+    private final OnTaskEditedListener listener;
     private AlertDialog dialog;
     private Task task;
+    private State old;
 
     public EditTaskDialog(final Context context, final OnTaskEditedListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -37,30 +42,37 @@ public class EditTaskDialog {
 
         ButterKnife.bind(this, view);
 
-        taskStatusView.setAdapter(new StatusAdapter(context));
-
         builder.setView(view);
-        builder.setPositiveButton(R.string.action_save, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int button) {
-                if (button == DialogInterface.BUTTON_POSITIVE && isValid() && isEdited()) {
-                    task.setName(taskNameView.getText().toString().trim());
-                    task.setStatus((Status) taskStatusView.getSelectedItem());
-                    dialogInterface.dismiss();
-                    if (listener != null)
-                        listener.onTaskEdited(task);
-                } else
-                    dialogInterface.cancel();
-            }
-        });
+        this.listener = listener;
         dialog = builder.create();
     }
 
     public EditTaskDialog setTask(Task task) {
         this.task = task;
+        this.old = task.getState();
         taskNameView.setText(task.getName());
-        taskStatusView.setSelection(task.getStatus().ordinal());
+        actionStart.setVisibility(task.getState().isStartAvailable() ? View.VISIBLE : View.GONE);
+        actionPause.setVisibility(task.getState().isPauseAvailable() ? View.VISIBLE : View.GONE);
+        actionDone.setVisibility(task.getState().isDoneAvailable() ? View.VISIBLE : View.GONE);
         return this;
+    }
+
+    @OnClick(R.id.action_start)
+    void onStart() {
+        task.start();
+        close();
+    }
+
+    @OnClick(R.id.action_pause)
+    void onPause() {
+        task.pause();
+        close();
+    }
+
+    @OnClick(R.id.action_done)
+    void onDone() {
+        task.done();
+        close();
     }
 
     public void show() {
@@ -68,13 +80,23 @@ public class EditTaskDialog {
     }
 
     private boolean isValid() {
-        return !taskNameView.getText().toString().trim().isEmpty() &&
-               !Status.NULL.equals(taskStatusView.getSelectedItem());
+        return !taskNameView.getText().toString().trim().isEmpty();
     }
 
     private boolean isEdited() {
         return !task.getName().equals(taskNameView.getText().toString()) ||
-                !task.getStatus().equals(taskStatusView.getSelectedItem());
+                !old.equals(task.getState());
+    }
+
+    private void close() {
+        if (isValid() && isEdited()) {
+            task.setName(taskNameView.getText().toString().trim());
+            dialog.dismiss();
+            if (listener != null)
+                listener.onTaskEdited(task);
+            return;
+        }
+        dialog.cancel();
     }
 
     public static interface OnTaskEditedListener {

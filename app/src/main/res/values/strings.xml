@@ -4,7 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_task_list">TaskListActivity</string>
-    <string name="status_new">New</string>
+    <string name="status_created">New</string>
     <string name="status_started">Started</string>
     <string name="status_done">Done</string>
     <string name="status">Status</string>
@@ -14,7 +14,7 @@
     <string name="name">Name</string>
     <string name="date_placeholder">10/08/2015</string>
     <string name="time_placeholder">11:45 - 12:56</string>
-    <string name="empty" />
+    <string name="status_null" />
     <string name="title_activity_tasks">TasksActivity</string>
     <string name="action_add">Add</string>
     <string name="add_task">Add task</string>
@@ -28,4 +28,8 @@
     <string name="status_icon">status icon</string>
     <string name="task_name_placeholder">task name</string>
     <string name="time_range_placeholder">11:43 - 15:21</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="done">Done</string>
+    <string name="status_restarted">Restarted</string>
 </resources>

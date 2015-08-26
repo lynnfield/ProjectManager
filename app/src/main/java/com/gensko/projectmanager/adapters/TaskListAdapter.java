@@ -5,18 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.gensko.projectmanager.R;
 import com.gensko.projectmanager.adapters.holders.TaskViewHolder;
-import com.gensko.projectmanager.models.domain.Task;
+import com.gensko.projectmanager.models.Task;
 import com.gensko.projectmanager.models.TaskList;
 
 import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by Genovich V.V. on 17.08.2015.
@@ -70,12 +65,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         notifyDataSetChanged();
     }
 
-    public boolean add(Task task) {
-        boolean ret = data.add(task);
-        notifyDataSetChanged();
-        return ret;
-    }
-
     @Override
     public int getItemViewType(int position) {
         return R.layout.list_item_task;
@@ -91,7 +80,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public void onBindViewHolder(TaskViewHolder viewHolder, int position) {
         final Task task = get(position);
         viewHolder.nameView.setText(task.getName());
-        viewHolder.statusView.setImageResource(task.getStatus().getDrawableResourceId());
+        viewHolder.statusView.setImageResource(task.getState().getDrawableResourceId());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

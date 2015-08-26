@@ -3,7 +3,6 @@ package com.gensko.projectmanager;
 import android.os.Environment;
 import android.widget.Toast;
 
-import com.gensko.projectmanager.models.domain.TaskStateChange;
 import com.gensko.projectmanager.observers.TimedTaskCreator;
 import com.gensko.projectmanager.repositories.TaskRepository;
 import com.gensko.projectmanager.repositories.TaskStateChangeRepository;

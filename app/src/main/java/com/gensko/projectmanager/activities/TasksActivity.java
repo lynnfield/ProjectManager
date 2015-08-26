@@ -10,14 +10,13 @@ import android.view.MenuItem;
 import com.gensko.projectmanager.R;
 import com.gensko.projectmanager.adapters.TaskListAdapter;
 import com.gensko.projectmanager.adapters.TimedTaskListAdapter;
-import com.gensko.projectmanager.adapters.holders.TaskViewHolder;
 import com.gensko.projectmanager.dialogs.CreateTaskDialog;
 import com.gensko.projectmanager.dialogs.DeleteTaskDialog;
 import com.gensko.projectmanager.dialogs.EditTaskDialog;
 import com.gensko.projectmanager.models.TaskList;
-import com.gensko.projectmanager.models.domain.Status;
-import com.gensko.projectmanager.models.domain.Task;
-import com.gensko.projectmanager.models.domain.TaskStateChange;
+import com.gensko.projectmanager.models.State;
+import com.gensko.projectmanager.models.Task;
+import com.gensko.projectmanager.models.TaskStateChange;
 import com.gensko.projectmanager.observers.TaskRepositoryObserver;
 import com.gensko.projectmanager.repositories.TaskRepository;
 import com.gensko.projectmanager.repositories.TaskStateChangeRepository;
@@ -36,7 +35,7 @@ public class TasksActivity
     private DeleteTaskDialog deleteTaskDialog;
     private TaskListAdapter adapter;
     private Observer observer;
-    private Status preEditTaskStatus;
+    private State preEditTaskState;
 
     @Bind(R.id.list)
     RecyclerView listView;
@@ -50,7 +49,11 @@ public class TasksActivity
 
         editTaskDialog = new EditTaskDialog(this, this);
         deleteTaskDialog = new DeleteTaskDialog(this, this);
-        adapter = new TimedTaskListAdapter(this, (TaskList) TaskRepository.getInstance().getData(), this);
+        adapter =
+                new TimedTaskListAdapter(
+                        this,
+                        (TaskList) TaskRepository.getInstance().getData(),
+                        this);
         observer = new TaskRepositoryObserver(adapter);
 
         listView.setLayoutManager(new LinearLayoutManager(this));
@@ -68,6 +71,8 @@ public class TasksActivity
     protected void onStop() {
         super.onStop();
         TaskRepository.getInstance().deleteObserver(observer);
+        TaskRepository.getInstance().save();
+        TaskStateChangeRepository.getInstance().save();
     }
 
     @Override
@@ -90,15 +95,13 @@ public class TasksActivity
     @Override
     public void onTaskCreated(Task task) {
         TaskRepository.getInstance().add(task);
-        TaskRepository.getInstance().save();
-        onTaskStatusChanged(task, Status.NULL);
+        onTaskStatusChanged(task, new State.Null());
     }
 
     @Override
     public void onTaskEdited(Task task) {
-        TaskRepository.getInstance().save();
-        if (!task.getStatus().equals(preEditTaskStatus))
-            onTaskStatusChanged(task, preEditTaskStatus);
+        if (!task.getState().equals(preEditTaskState))
+            onTaskStatusChanged(task, preEditTaskState);
     }
 
     @Override
@@ -106,12 +109,11 @@ public class TasksActivity
         TaskRepository.getInstance().remove(task);
         TaskRepository.getInstance().save();
         TaskStateChangeRepository.getInstance().onTaskRemoved(task);
-        TaskStateChangeRepository.getInstance().save();
     }
 
     @Override
     public void onTaskClick(Task task) {
-        preEditTaskStatus = task.getStatus();
+        preEditTaskState = task.getState();
         editTaskDialog.setTask(task).show();
     }
 
@@ -121,12 +123,11 @@ public class TasksActivity
         return true;
     }
 
-    private void onTaskStatusChanged(Task task, Status oldStatus) {
+    private void onTaskStatusChanged(Task task, State oldState) {
         TaskStateChange change = new TaskStateChange();
         change.setTaskId(task.getId());
-        change.setOldStatus(oldStatus);
-        change.setNewStatus(task.getStatus());
+        change.setOldState(oldState);
+        change.setNewState(task.getState());
         TaskStateChangeRepository.getInstance().add(change);
-        TaskStateChangeRepository.getInstance().save();
     }
 }

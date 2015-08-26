@@ -2,7 +2,7 @@ package com.gensko.projectmanager.utils;
 
 import android.os.AsyncTask;
 
-import com.gensko.projectmanager.models.domain.Record;
+import com.gensko.projectmanager.models.Record;
 
 import org.json.JSONArray;
 import org.json.JSONException;

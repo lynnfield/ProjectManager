@@ -1,7 +1,5 @@
 package com.gensko.projectmanager.models;
 
-import com.gensko.projectmanager.models.domain.TaskStateChange;
-
 import java.util.ArrayList;
 
 /**

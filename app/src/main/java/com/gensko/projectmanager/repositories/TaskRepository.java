@@ -1,18 +1,14 @@
 package com.gensko.projectmanager.repositories;
 
-import android.content.Context;
-
-import com.gensko.projectmanager.models.TimedTask;
-import com.gensko.projectmanager.models.domain.Task;
+import com.gensko.projectmanager.models.Task;
 import com.gensko.projectmanager.models.TaskList;
-import com.gensko.projectmanager.models.domain.TaskStateChange;
+import com.gensko.projectmanager.models.TaskStateChange;
 import com.gensko.projectmanager.utils.ListLoader;
 import com.gensko.projectmanager.utils.ListSaver;
 import com.gensko.projectmanager.utils.TaskListLoader;
 import com.gensko.projectmanager.utils.TaskListSaver;
 
 import java.util.List;
-import java.util.Observable;
 
 /**
  * Created by Genovich V.V. on 17.08.2015.
@@ -66,4 +62,6 @@ public class TaskRepository extends RecordRepository<Task> {
     protected ListLoader<Task> createNewListLoader() {
         return new TaskListLoader();
     }
+
+
 }

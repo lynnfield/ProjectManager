@@ -1,17 +1,11 @@
 package com.gensko.projectmanager.models;
 
-import android.support.v7.util.SortedList;
-
-import com.gensko.projectmanager.models.domain.Status;
-import com.gensko.projectmanager.models.domain.Task;
-import com.gensko.projectmanager.models.domain.TaskStateChange;
 import com.gensko.projectmanager.utils.TaskStateChangeComparator;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Created by Genovich V.V. on 20.0 8.2015.
@@ -20,13 +14,11 @@ import java.util.GregorianCalendar;
 public class TimedTask extends Task {
     private Calendar begin;
     private Calendar end;
-    private Calendar total;
+    private Date total;
     private ArrayList<TaskStateChange> changes = new ArrayList<>();
 
     public TimedTask(Task task) {
-        setId(task.getId());
-        setName(task.getName());
-        setStatus(task.getStatus());
+        super(task);
     }
 
     public Calendar getBegin() {
@@ -45,20 +37,20 @@ public class TimedTask extends Task {
         this.end = end;
     }
 
-    public Calendar getTotal() {
+    public Date getTotal() {
         return total;
     }
 
-    protected void setTotal(Calendar total) {
+    protected void setTotal(Date total) {
         this.total = total;
     }
 
     public void addChange(TaskStateChange data) {
         changes.add(data);
         Collections.sort(changes, TaskStateChangeComparator.getInstance());
-        if (data.getNewStatus().isBegin())
+        if (data.getNewState().isBegin())
             computeBegin();
-        else if (data.getNewStatus().isEnd())
+        else if (data.getNewState().isEnd())
             computeEnd();
         if (changes.size() >= 2)
             computeTotal();
@@ -71,7 +63,7 @@ public class TimedTask extends Task {
 
     private void computeBegin() {
         for (int i = changes.size() - 1; i >= 0; --i)
-            if (changes.get(i).getNewStatus().isBegin()) {
+            if (changes.get(i).getNewState().isBegin()) {
                 setBegin(changes.get(i).getTime());
                 return;
             }
@@ -79,7 +71,7 @@ public class TimedTask extends Task {
 
     private void computeEnd() {
         for (int i = changes.size() - 1; i >= 0; --i)
-            if (changes.get(i).getNewStatus().isEnd()) {
+            if (changes.get(i).getNewState().isEnd()) {
                 setEnd(changes.get(i).getTime());
                 return;
             }
@@ -90,16 +82,21 @@ public class TimedTask extends Task {
         for (int i = 0; i < changes.size(); ++ i) {
             TaskStateChange current = changes.get(i);
 
-            if (current.getNewStatus().isBegin()) {
+            if (current.getNewState().isBegin()) {
                 start = current.getTime();
-            } else if (current.getNewStatus().isEnd() && start != null) {
-                Calendar total = Calendar.getInstance();
-                total.setTimeInMillis(
-                        current.getTime().getTimeInMillis() - start.getTimeInMillis());
+            } else if (current.getNewState().isEnd() && start != null) {
+                long total = current.getTime().getTimeInMillis() - start.getTimeInMillis();
                 if (getTotal() != null)
-                    total.setTimeInMillis(total.getTimeInMillis() + getTotal().getTimeInMillis());
+                    total += getTotal().getTime();
                 setTotal(total);
             }
         }
+    }
+
+    private void setTotal(long millis) {
+        if (total != null)
+            total.setTime(millis);
+        else
+            total = new Date(millis);
     }
 }

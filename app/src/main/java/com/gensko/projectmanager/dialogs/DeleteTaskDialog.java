@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 
 import com.gensko.projectmanager.R;
-import com.gensko.projectmanager.models.domain.Task;
+import com.gensko.projectmanager.models.Task;
 
 /**
  * Created by Genovich V.V. on 18.08.2015.
