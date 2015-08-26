@@ -21,6 +21,7 @@ import com.gensko.projectmanager.observers.TaskRepositoryObserver;
 import com.gensko.projectmanager.repositories.TaskRepository;
 import com.gensko.projectmanager.repositories.TaskStateChangeRepository;
 
+import java.util.Calendar;
 import java.util.Observer;
 
 import butterknife.Bind;

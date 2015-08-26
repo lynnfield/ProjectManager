@@ -13,17 +13,8 @@ import java.util.Observable;
  */
 @SuppressWarnings("DefaultFileTemplate")
 public class TimedTaskCreator extends NotificationObserver {
-    private final Runnable createTimerTaskRunnable = new Runnable() {
-        @Override
-        public void run() {
-            for (int i = 0; i < TaskStateChangeRepository.getInstance().size(); ++i)
-                onTaskStateChanged(TaskStateChangeRepository.getInstance().get(i));
-            timedTasksCreated = true;
-        }
-    };
     private final TaskStateChangesProcessor taskStateChangesProcessor =
             new TaskStateChangesProcessor();
-
     private boolean taskRepositoryLoaded;
     private boolean taskStateChangeRepositoryLoaded;
     private boolean timedTasksCreated;
@@ -56,10 +47,9 @@ public class TimedTaskCreator extends NotificationObserver {
     }
 
     private void createTimedTaskAsync() {
-        if (TaskStateChangeRepository.getInstance().size() != 0) {
-            new Thread(createTimerTaskRunnable).start();
-        } else
-            timedTasksCreated = true;
+        if (TaskStateChangeRepository.getInstance().size() != 0)
+            taskStateChangesProcessor.process(TaskStateChangeRepository.getInstance().getData());
+        timedTasksCreated = true;
     }
 
     private void onTaskStateChanged(final TaskStateChange change) {

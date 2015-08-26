@@ -74,7 +74,7 @@ public class TimedTaskListAdapter extends TaskListAdapter {
             else if (State.Paused.NAME.equals(task.getState().toString()))
                 time = getTimeRange(task.getBegin(), task.getEnd());
             else if (State.Done.NAME.equals(task.getState().toString()))
-                time = getTotal(task.getTotal().getTime());
+                time = getTotal(task.getTotal());
 
             ((TimedTaskViewHolder)viewHolder).timeView.setText(time);
         }
@@ -106,10 +106,10 @@ public class TimedTaskListAdapter extends TaskListAdapter {
     }
 
     private Converter[] converters = {
-            new Converter(1000l, 60l, "seconds"),
-            new Converter(60l, 60l, "minutes"),
-            new Converter(60l, 24l, "hours"),
-            new Converter(24l, 7l, "weeks")
+            new Converter(1000l, 60l, "sec"),
+            new Converter(60l, 60l, "min"),
+            new Converter(60l, 24l, "hrs"),
+            new Converter(24l, 7l, "wks")
     };
 
     private String getTotal(long total) {

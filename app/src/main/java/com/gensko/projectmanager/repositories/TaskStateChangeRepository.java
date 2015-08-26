@@ -26,7 +26,6 @@ public class TaskStateChangeRepository extends RecordRepository<TaskStateChange>
 
     @Override
     public long add(TaskStateChange taskStateChange) {
-        taskStateChange.setTime(Calendar.getInstance());
         return super.add(taskStateChange);
     }
 

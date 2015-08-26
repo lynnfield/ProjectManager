@@ -14,7 +14,7 @@ import java.util.Date;
 public class TimedTask extends Task {
     private Calendar begin;
     private Calendar end;
-    private Date total;
+    private long total;
     private ArrayList<TaskStateChange> changes = new ArrayList<>();
 
     public TimedTask(Task task) {
@@ -37,11 +37,11 @@ public class TimedTask extends Task {
         this.end = end;
     }
 
-    public Date getTotal() {
+    public long getTotal() {
         return total;
     }
 
-    protected void setTotal(Date total) {
+    protected void setTotal(long total) {
         this.total = total;
     }
 
@@ -86,17 +86,9 @@ public class TimedTask extends Task {
                 start = current.getTime();
             } else if (current.getNewState().isEnd() && start != null) {
                 long total = current.getTime().getTimeInMillis() - start.getTimeInMillis();
-                if (getTotal() != null)
-                    total += getTotal().getTime();
+                total += getTotal();
                 setTotal(total);
             }
         }
-    }
-
-    private void setTotal(long millis) {
-        if (total != null)
-            total.setTime(millis);
-        else
-            total = new Date(millis);
     }
 }

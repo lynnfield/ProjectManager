@@ -6,6 +6,7 @@ import com.gensko.projectmanager.models.TimedTask;
 import com.gensko.projectmanager.repositories.TaskRepository;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -31,16 +32,22 @@ public class TaskStateChangesProcessor extends Thread {
         while (!halt) {
             if (hasDataToProcess())
                 processNextData();
-            pause();
+            else
+                pause();
         }
     }
 
     private boolean hasDataToProcess() {
-        return !queue.isEmpty();
+        synchronized (queue) {
+            return !queue.isEmpty();
+        }
     }
 
     private void processNextData() {
-        TaskStateChange change = queue.poll();
+        TaskStateChange change;
+        synchronized (queue) {
+            change = queue.poll();
+        }
         processData(change);
     }
 
@@ -65,5 +72,11 @@ public class TaskStateChangesProcessor extends Thread {
         try {
             sleep(1000);
         } catch (InterruptedException ignored) {}
+    }
+
+    public void process(List<TaskStateChange> data) {
+        synchronized (queue) {
+            queue.addAll(data);
+        }
     }
 }
