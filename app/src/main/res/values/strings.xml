@@ -32,4 +32,6 @@
     <string name="pause">Pause</string>
     <string name="done">Done</string>
     <string name="status_restarted">Restarted</string>
+    <string name="parent_hierarchy_placeholder"><![CDATA[parent <- sub parent <- subsub parent <- subsubsub parent <- subsubsubsub parent]]></string>
+    <string name="task_name">Task name</string>
 </resources>

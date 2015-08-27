@@ -22,14 +22,6 @@ import java.util.Calendar;
  */
 @SuppressWarnings("DefaultFileTemplate")
 public class TimedTaskListAdapter extends TaskListAdapter {
-    private static final Calendar NULL_CALENDAR;
-
-    static {
-        NULL_CALENDAR = Calendar.getInstance();
-        NULL_CALENDAR.setTimeInMillis(
-                NULL_CALENDAR.getTimeInMillis() - NULL_CALENDAR.getTimeInMillis());
-    }
-
     public TimedTaskListAdapter(Context context) {
         super(context);
     }
