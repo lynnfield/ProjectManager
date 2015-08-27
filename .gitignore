@@ -30,3 +30,6 @@ proguard/
 
 
 .idea/
+app/app.iml
+keystore.jks
+ProjectManager.iml
