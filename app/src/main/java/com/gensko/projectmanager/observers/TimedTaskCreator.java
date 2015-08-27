@@ -1,7 +1,9 @@
 package com.gensko.projectmanager.observers;
 
 import com.gensko.projectmanager.models.Record;
+import com.gensko.projectmanager.models.Task;
 import com.gensko.projectmanager.models.TaskStateChange;
+import com.gensko.projectmanager.models.TimedTask;
 import com.gensko.projectmanager.repositories.TaskRepository;
 import com.gensko.projectmanager.repositories.TaskStateChangeRepository;
 import com.gensko.projectmanager.utils.TaskStateChangesProcessor;
@@ -41,6 +43,11 @@ public class TimedTaskCreator extends NotificationObserver {
     }
 
     @Override
+    protected void onLoadingError(Observable observable, String message) {
+        onLoaded(observable);
+    }
+
+    @Override
     protected void onAdd(Observable observable, Record data) {
         if (timedTasksCreated && isStateRepository(observable) && isAllLoaded())
             onTaskStateChanged((TaskStateChange) data);
@@ -48,8 +55,24 @@ public class TimedTaskCreator extends NotificationObserver {
 
     private void createTimedTaskAsync() {
         if (TaskStateChangeRepository.getInstance().size() != 0)
-            taskStateChangesProcessor.process(TaskStateChangeRepository.getInstance().getData());
-        timedTasksCreated = true;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < TaskStateChangeRepository.getInstance().size(); ++ i) {
+                        TaskStateChange change = TaskStateChangeRepository.getInstance().get(i);
+                        TimedTask task = (TimedTask) TaskRepository.getInstance().findBy(change);
+                        if (task == null) {
+                            TaskStateChangeRepository.getInstance().remove(change);
+                            --i;
+                        }
+                        else
+                            task.linkChange(change);
+                    }
+                    timedTasksCreated = true;
+                }
+            }).start();
+        else
+            timedTasksCreated = true;
     }
 
     private void onTaskStateChanged(final TaskStateChange change) {

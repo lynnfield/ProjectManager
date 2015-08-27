@@ -1,21 +1,18 @@
 package com.gensko.projectmanager.models;
 
+import com.gensko.projectmanager.utils.Jsonable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * Created by Genovich V.V. on 19.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
 public class TaskStateChange extends Record {
-    private static DateFormat formatter =
-            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
     private static final String TASK_ID_FIELD = "TaskId";
     private static final String OLD_STATE_FIELD = "OldState";
     private static final String NEW_STATE_FIELD = "NewState";
@@ -70,7 +67,7 @@ public class TaskStateChange extends Record {
         try {
             Calendar parsed = Calendar.getInstance();
             parsed.setTime(
-                    formatter.parse(
+                    Jsonable.FORMATTER.parse(
                             obj.getString(TaskStateChange.TIME_FIELD)));
             time = parsed;
         } catch (ParseException ignored) {}
@@ -82,6 +79,6 @@ public class TaskStateChange extends Record {
                 .put(TASK_ID_FIELD, taskId)
                 .put(OLD_STATE_FIELD, oldState.toString())
                 .put(NEW_STATE_FIELD, newState.toString())
-                .put(TIME_FIELD, formatter.format(time.getTime()));
+                .put(TIME_FIELD, Jsonable.FORMATTER.format(time.getTime()));
     }
 }

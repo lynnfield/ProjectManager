@@ -10,8 +10,8 @@ import org.json.JSONObject;
  */
 @SuppressWarnings("DefaultFileTemplate")
 public class TaskListLoader extends ListLoader<Task> {
-    public void load() {
-        super.load("Task");
+    public void load(OnLoaderEventsListener<Task> listener) {
+        super.load("Task", listener);
     }
 
     @Override

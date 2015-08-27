@@ -8,7 +8,6 @@ import com.gensko.projectmanager.utils.ListSaver;
 import com.gensko.projectmanager.utils.TaskStateChangeListLoader;
 import com.gensko.projectmanager.utils.TaskStateChangeListSaver;
 
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -40,14 +39,9 @@ public class TaskStateChangeRepository extends RecordRepository<TaskStateChange>
     }
 
     @Override
-    protected TaskStateChange[] createNewArray(int size) {
-        return new TaskStateChange[size];
-    }
-
-    @Override
-    protected void save(ListSaver<TaskStateChange> saver, TaskStateChange[] data) {
+    protected void save(ListSaver<TaskStateChange> saver, List<TaskStateChange> data, ListSaver.OnListSaverEventsListener<TaskStateChange> listener) {
         TaskStateChangeListSaver listSaver = (TaskStateChangeListSaver) saver;
-        listSaver.save(data);
+        listSaver.save(data, listener);
     }
 
     @Override
@@ -56,9 +50,9 @@ public class TaskStateChangeRepository extends RecordRepository<TaskStateChange>
     }
 
     @Override
-    protected void load(ListLoader<TaskStateChange> loader) {
+    protected void load(ListLoader<TaskStateChange> loader, ListLoader.OnLoaderEventsListener<TaskStateChange> listener) {
         TaskStateChangeListLoader listLoader = (TaskStateChangeListLoader) loader;
-        listLoader.load();
+        listLoader.load(listener);
     }
 
     @Override

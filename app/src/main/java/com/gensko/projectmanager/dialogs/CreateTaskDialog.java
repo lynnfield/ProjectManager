@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.gensko.projectmanager.R;
 import com.gensko.projectmanager.models.Task;
+import com.gensko.projectmanager.models.TimedTask;
 
 import butterknife.ButterKnife;
 
@@ -30,7 +31,7 @@ public class CreateTaskDialog {
             public void onClick(DialogInterface dialogInterface, int button) {
                 if (button == DialogInterface.BUTTON_POSITIVE &&
                         !taskNameView.getText().toString().isEmpty()) {
-                    Task task = new Task();
+                    Task task = new TimedTask();
                     task.setName(taskNameView.getText().toString().trim());
                     listener.onTaskCreated(task);
                 } else

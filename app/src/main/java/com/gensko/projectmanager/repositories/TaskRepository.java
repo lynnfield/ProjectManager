@@ -7,6 +7,7 @@ import com.gensko.projectmanager.utils.ListLoader;
 import com.gensko.projectmanager.utils.ListSaver;
 import com.gensko.projectmanager.utils.TaskListLoader;
 import com.gensko.projectmanager.utils.TaskListSaver;
+import com.gensko.projectmanager.utils.TimedTaskListLoader;
 
 import java.util.List;
 
@@ -37,14 +38,9 @@ public class TaskRepository extends RecordRepository<Task> {
     }
 
     @Override
-    protected Task[] createNewArray(int size) {
-        return new Task[size];
-    }
-
-    @Override
-    protected void save(ListSaver<Task> saver, Task[] data) {
+    protected void save(ListSaver<Task> saver, List<Task> data, ListSaver.OnListSaverEventsListener<Task> listener) {
         TaskListSaver listSaver = (TaskListSaver) saver;
-        listSaver.save(data);
+        listSaver.save(data, listener);
     }
 
     @Override
@@ -53,14 +49,14 @@ public class TaskRepository extends RecordRepository<Task> {
     }
 
     @Override
-    protected void load(ListLoader<Task> loader) {
+    protected void load(ListLoader<Task> loader, ListLoader.OnLoaderEventsListener<Task> listener) {
         TaskListLoader listLoader = (TaskListLoader) loader;
-        listLoader.load();
+        listLoader.load(listener);
     }
 
     @Override
     protected ListLoader<Task> createNewListLoader() {
-        return new TaskListLoader();
+        return new TimedTaskListLoader();
     }
 
 

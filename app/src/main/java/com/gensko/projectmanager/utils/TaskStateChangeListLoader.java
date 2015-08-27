@@ -11,8 +11,8 @@ import org.json.JSONObject;
 @SuppressWarnings("DefaultFileTemplate")
 public class TaskStateChangeListLoader extends ListLoader<TaskStateChange> {
 
-    public void load() {
-        load("TaskStateChange");
+    public void load(OnLoaderEventsListener<TaskStateChange> listener) {
+        load("TaskStateChange", listener);
     }
 
     @Override

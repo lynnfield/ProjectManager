@@ -69,27 +69,24 @@ public abstract class RecordRepository<Model extends Record>
         return ret;
     }
 
-    public void save() {
+    public void save(ListSaver.OnListSaverEventsListener<Model> listener) {
         ListSaver<Model> saver = createNewListSaver();
-        save(saver, data.toArray(createNewArray(data.size())));
+        save(saver, data, listener);
     }
 
     public void load() {
         ListLoader<Model> loader = createNewListLoader();
-        loader.setModelLoadedListener(this);
-        load(loader);
+        load(loader, this);
     }
 
     protected abstract boolean isSame(Model item, Object object);
     protected abstract List<Model> createNewList();
 
-    protected abstract Model[] createNewArray(int size);
-    protected abstract void save(ListSaver<Model> saver, Model[] data);
-
     protected abstract ListSaver<Model> createNewListSaver();
-    protected abstract void load(ListLoader<Model> loader);
+    protected abstract void save(ListSaver<Model> saver, List<Model> data, ListSaver.OnListSaverEventsListener<Model> listener);
 
     protected abstract ListLoader<Model> createNewListLoader();
+    protected abstract void load(ListLoader<Model> loader, ListLoader.OnLoaderEventsListener<Model> listener);
 
     @Override
     public void onModelLoaded(Model model) {

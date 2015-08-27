@@ -21,7 +21,6 @@ import com.gensko.projectmanager.observers.TaskRepositoryObserver;
 import com.gensko.projectmanager.repositories.TaskRepository;
 import com.gensko.projectmanager.repositories.TaskStateChangeRepository;
 
-import java.util.Calendar;
 import java.util.Observer;
 
 import butterknife.Bind;
@@ -72,8 +71,6 @@ public class TasksActivity
     protected void onStop() {
         super.onStop();
         TaskRepository.getInstance().deleteObserver(observer);
-        TaskRepository.getInstance().save();
-        TaskStateChangeRepository.getInstance().save();
     }
 
     @Override
@@ -96,11 +93,13 @@ public class TasksActivity
     @Override
     public void onTaskCreated(Task task) {
         TaskRepository.getInstance().add(task);
+        TaskRepository.getInstance().save(null);
         onTaskStatusChanged(task, new State.Null());
     }
 
     @Override
     public void onTaskEdited(Task task) {
+        TaskRepository.getInstance().save(null);
         if (!task.getState().equals(preEditTaskState))
             onTaskStatusChanged(task, preEditTaskState);
     }
@@ -108,8 +107,9 @@ public class TasksActivity
     @Override
     public void onDeleteTask(Task task) {
         TaskRepository.getInstance().remove(task);
-        TaskRepository.getInstance().save();
+        TaskRepository.getInstance().save(null);
         TaskStateChangeRepository.getInstance().onTaskRemoved(task);
+        TaskStateChangeRepository.getInstance().save(null);
     }
 
     @Override
@@ -130,5 +130,6 @@ public class TasksActivity
         change.setOldState(oldState);
         change.setNewState(task.getState());
         TaskStateChangeRepository.getInstance().add(change);
+        TaskStateChangeRepository.getInstance().save(null);
     }
 }
