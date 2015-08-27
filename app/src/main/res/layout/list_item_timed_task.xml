@@ -10,16 +10,26 @@
         android:id="@+id/status"
         android:layout_alignParentStart="true"
         android:src="@drawable/ic_assignment_black_48dp"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/status_icon" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="task name"
+        android:text="@string/task_name_placeholder"
         android:id="@+id/name"
         android:layout_alignParentStart="false"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/status"
+        android:layout_toEndOf="@+id/status"
         android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time_range_placeholder"
+        android:id="@+id/time"
+        android:layout_below="@+id/name"
+        android:layout_toEndOf="@+id/status"
+        android:layout_marginTop="2dp" />
 
 </RelativeLayout>

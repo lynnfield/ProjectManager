@@ -2,16 +2,15 @@ package com.gensko.projectmanager.observers;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.gensko.projectmanager.repositories.TaskRepository;
+import com.gensko.projectmanager.repositories.RecordRepository;
 
 import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by Genovich V.V. on 18.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public class TaskRepositoryObserver implements Observer {
+public class TaskRepositoryObserver extends NotificationObserver {
     private RecyclerView.Adapter adapter;
 
     public TaskRepositoryObserver(RecyclerView.Adapter adapter) {
@@ -19,8 +18,7 @@ public class TaskRepositoryObserver implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        if (observable instanceof TaskRepository)
-            adapter.notifyDataSetChanged();
+    protected void onNotification(Observable observable, RecordRepository.Notification notification) {
+        adapter.notifyDataSetChanged();
     }
 }

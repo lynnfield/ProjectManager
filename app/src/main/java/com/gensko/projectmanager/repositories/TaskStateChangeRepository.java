@@ -1,18 +1,14 @@
 package com.gensko.projectmanager.repositories;
 
-import android.content.Context;
-
 import com.gensko.projectmanager.models.TaskStateChangeList;
-import com.gensko.projectmanager.models.domain.Task;
-import com.gensko.projectmanager.models.domain.TaskStateChange;
+import com.gensko.projectmanager.models.Task;
+import com.gensko.projectmanager.models.TaskStateChange;
 import com.gensko.projectmanager.utils.ListLoader;
 import com.gensko.projectmanager.utils.ListSaver;
 import com.gensko.projectmanager.utils.TaskStateChangeListLoader;
 import com.gensko.projectmanager.utils.TaskStateChangeListSaver;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Observable;
 
 /**
  * Created by Genovich V.V. on 19.08.2015.
@@ -29,12 +25,11 @@ public class TaskStateChangeRepository extends RecordRepository<TaskStateChange>
 
     @Override
     public long add(TaskStateChange taskStateChange) {
-        taskStateChange.setTime(Calendar.getInstance());
         return super.add(taskStateChange);
     }
 
     @Override
-    protected boolean isEquals(TaskStateChange item, Object o) {
+    protected boolean isSame(TaskStateChange item, Object o) {
         return o instanceof Task && item.getTaskId() == ((Task) o).getId();
     }
 
@@ -44,14 +39,9 @@ public class TaskStateChangeRepository extends RecordRepository<TaskStateChange>
     }
 
     @Override
-    protected TaskStateChange[] createNewArray(int size) {
-        return new TaskStateChange[size];
-    }
-
-    @Override
-    protected void save(ListSaver<TaskStateChange> saver, TaskStateChange[] data) {
+    protected void save(ListSaver<TaskStateChange> saver, List<TaskStateChange> data, ListSaver.OnListSaverEventsListener<TaskStateChange> listener) {
         TaskStateChangeListSaver listSaver = (TaskStateChangeListSaver) saver;
-        listSaver.save(data);
+        listSaver.save(data, listener);
     }
 
     @Override
@@ -60,9 +50,9 @@ public class TaskStateChangeRepository extends RecordRepository<TaskStateChange>
     }
 
     @Override
-    protected void load(ListLoader<TaskStateChange> loader) {
+    protected void load(ListLoader<TaskStateChange> loader, ListLoader.OnLoaderEventsListener<TaskStateChange> listener) {
         TaskStateChangeListLoader listLoader = (TaskStateChangeListLoader) loader;
-        listLoader.load();
+        listLoader.load(listener);
     }
 
     @Override
@@ -71,7 +61,7 @@ public class TaskStateChangeRepository extends RecordRepository<TaskStateChange>
     }
 
     public void onTaskRemoved(Task task) {
-        TaskStateChangeList list = (TaskStateChangeList) findAllBy(task);
+        List<TaskStateChange> list = findAllBy(task);
         removeAll(list);
     }
 }

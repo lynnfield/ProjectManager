@@ -1,8 +1,6 @@
 package com.gensko.projectmanager.utils;
 
-import android.content.Context;
-
-import com.gensko.projectmanager.models.domain.Task;
+import com.gensko.projectmanager.models.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,16 +10,14 @@ import org.json.JSONObject;
  */
 @SuppressWarnings("DefaultFileTemplate")
 public class TaskListLoader extends ListLoader<Task> {
-    public void load() {
-        super.load("Task");
+    public void load(OnLoaderEventsListener<Task> listener) {
+        super.load("Task", listener);
     }
 
     @Override
     protected Task parse(JSONObject obj) throws JSONException {
         Task task = new Task();
-        task.setId(obj.getLong("Id"));
-        task.setName(obj.getString("Name"));
-        task.setStatus(com.gensko.projectmanager.models.domain.Status.valueOf(obj.getString("Status")));
+        task.fillFrom(obj);
         return task;
     }
 }
