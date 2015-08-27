@@ -29,3 +29,25 @@ proguard/
 *.log
 
 
+.idea/.name
+.idea/compiler.xml
+.idea/copyright/profiles_settings.xml
+.idea/dictionaries/lynnfield.xml
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/libraries/appcompat_v7_22_2_1.xml
+.idea/libraries/butterknife_7_0_1.xml
+.idea/libraries/cardview_v7_22_2_1.xml
+.idea/libraries/recyclerview_v7_22_2_1.xml
+.idea/libraries/support_annotations_22_2_1.xml
+.idea/libraries/support_v4_22_2_1.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/scopes/scope_settings.xml
+.idea/vcs.xml
+.idea/workspace.xml
+app/app.iml
+keystore.jks
+ProjectManager.iml
