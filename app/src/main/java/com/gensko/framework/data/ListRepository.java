@@ -1,4 +1,4 @@
-package com.gensko.projectmanager.repositories;
+package com.gensko.framework.data;
 
 import java.util.Collections;
 import java.util.Comparator;
