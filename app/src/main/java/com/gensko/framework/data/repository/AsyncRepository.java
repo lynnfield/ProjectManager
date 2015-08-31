@@ -1,4 +1,4 @@
-package com.gensko.framework.data;
+package com.gensko.framework.data.repository;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -12,11 +12,11 @@ import java.util.List;
  * Created by Genovich V.V. on 31.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public class AsyncRepository<Model> implements IRepository<Model> {
+public class AsyncRepository<Model> implements Repository<Model> {
     private RunnableProcessor processor = new RunnableProcessor();
-    private IRepository<Model> repository;
+    private Repository<Model> repository;
 
-    public AsyncRepository(IRepository<Model> repository) {
+    public AsyncRepository(Repository<Model> repository) {
         this.repository = repository;
         processor.start();
     }
@@ -91,11 +91,11 @@ public class AsyncRepository<Model> implements IRepository<Model> {
     }
 
     private static class AddTask<T> implements Runnable {
-        private IRepository<T> repository;
+        private Repository<T> repository;
         private T model;
         private Callback<T> callback;
 
-        private AddTask(IRepository<T> repository, T model, Callback<T> callback) {
+        private AddTask(Repository<T> repository, T model, Callback<T> callback) {
             this.repository = repository;
             this.model = model;
             this.callback = callback;
@@ -108,11 +108,11 @@ public class AsyncRepository<Model> implements IRepository<Model> {
     }
 
     private static class RemoveTask<T> implements Runnable {
-        private IRepository<T> repository;
+        private Repository<T> repository;
         private T model;
         private Callback<T> callback;
 
-        public RemoveTask(IRepository<T> repository, T model, Callback<T> callback) {
+        public RemoveTask(Repository<T> repository, T model, Callback<T> callback) {
             this.repository = repository;
             this.model = model;
             this.callback = callback;
@@ -125,11 +125,11 @@ public class AsyncRepository<Model> implements IRepository<Model> {
     }
 
     private static class ReplaceTask<T> implements Runnable {
-        private IRepository<T> repository;
+        private Repository<T> repository;
         private ReplaceData<T> input;
         private Callback<ReplaceData<T>> callback;
 
-        private ReplaceTask(IRepository<T> repository, ReplaceData<T> model, Callback<ReplaceData<T>> callback) {
+        private ReplaceTask(Repository<T> repository, ReplaceData<T> model, Callback<ReplaceData<T>> callback) {
             this.repository = repository;
             this.input = model;
             this.callback = callback;
@@ -142,11 +142,11 @@ public class AsyncRepository<Model> implements IRepository<Model> {
     }
 
     private static class FindTask<T> implements Runnable {
-        private IRepository<T> repository;
+        private Repository<T> repository;
         private Condition<T> condition;
         private Callback<T> callback;
 
-        private FindTask(IRepository<T> repository, Condition<T> condition, Callback<T> callback) {
+        private FindTask(Repository<T> repository, Condition<T> condition, Callback<T> callback) {
             this.repository = repository;
             this.condition = condition;
             this.callback = callback;
@@ -159,11 +159,11 @@ public class AsyncRepository<Model> implements IRepository<Model> {
     }
 
     private static class FilterTask<T> implements Runnable {
-        private IRepository<T> repository;
+        private Repository<T> repository;
         private Condition<T> condition;
         private Callback<List<T>> callback;
 
-        private FilterTask(IRepository<T> repository, Condition<T> condition, Callback<List<T>> callback) {
+        private FilterTask(Repository<T> repository, Condition<T> condition, Callback<List<T>> callback) {
             this.repository = repository;
             this.condition = condition;
             this.callback = callback;
@@ -176,11 +176,11 @@ public class AsyncRepository<Model> implements IRepository<Model> {
     }
 
     private static class SortTask<T> implements Runnable {
-        private IRepository<T> repository;
+        private Repository<T> repository;
         private Comparator<T> comparator;
         private Callback<List<T>> callback;
 
-        private SortTask(IRepository<T> repository, Comparator<T> comparator, Callback<List<T>> callback) {
+        private SortTask(Repository<T> repository, Comparator<T> comparator, Callback<List<T>> callback) {
             this.repository = repository;
             this.comparator = comparator;
             this.callback = callback;
@@ -193,11 +193,11 @@ public class AsyncRepository<Model> implements IRepository<Model> {
     }
 
     private static class GetDataTask<T> implements Runnable {
-        private IRepository<T> repository;
+        private Repository<T> repository;
         private Interval interval;
         private Callback<List<T>> callback;
 
-        private GetDataTask(IRepository<T> repository, Interval interval, Callback<List<T>> callback) {
+        private GetDataTask(Repository<T> repository, Interval interval, Callback<List<T>> callback) {
             this.repository = repository;
             this.interval = interval;
             this.callback = callback;
@@ -210,10 +210,10 @@ public class AsyncRepository<Model> implements IRepository<Model> {
     }
 
     private static class SaveTask<T> implements Runnable {
-        private IRepository<T> repository;
+        private Repository<T> repository;
         private Callback<String> callback;
 
-        private SaveTask(IRepository<T> repository, Callback<String> callback) {
+        private SaveTask(Repository<T> repository, Callback<String> callback) {
             this.repository = repository;
             this.callback = callback;
         }

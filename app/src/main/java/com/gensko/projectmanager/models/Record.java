@@ -1,6 +1,6 @@
 package com.gensko.projectmanager.models;
 
-import com.gensko.framework.utils.Jsonable;
+import com.gensko.framework.data.models.Jsonable;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.gensko.framework.utils;
+package com.gensko.framework.data.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;

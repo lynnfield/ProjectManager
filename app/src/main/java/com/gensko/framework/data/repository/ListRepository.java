@@ -1,4 +1,4 @@
-package com.gensko.framework.data;
+package com.gensko.framework.data.repository;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,8 +8,7 @@ import java.util.List;
  * Created by Genovich V.V. on 31.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public abstract class ListRepository<Model> implements IRepository<Model> {
-
+public abstract class ListRepository<Model> implements Repository<Model> {
     private List<Model> list = newList();
 
     protected abstract List<Model> newList();
@@ -68,11 +67,18 @@ public abstract class ListRepository<Model> implements IRepository<Model> {
     }
 
     @Override
-    public void getData(int offset, int length, Callback<List<Model>> callback) {
-        length = (length == Interval.LENGTH_MAX ? list.size() - offset : length);
-        callback.onDone(list.subList(offset, offset + length));
+    public void getData(Interval interval, Callback<List<Model>> callback) {
+        int length =
+                (interval.getLength() == Interval.LENGTH_MAX ?
+                        list.size() - interval.getOffset() :
+                        interval.getLength());
+        callback.onDone(list.subList(interval.getOffset(), interval.getOffset() + length));
     }
 
     @Override
-    public void save(Callback<String> callback) {}
+    public void save(Callback<String> callback) {
+        save(list, callback);
+    }
+
+    protected abstract void save(List<Model> list, Callback<String> callback);
 }

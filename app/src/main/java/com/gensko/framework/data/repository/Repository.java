@@ -1,4 +1,4 @@
-package com.gensko.framework.data;
+package com.gensko.framework.data.repository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Genovich V.V. on 31.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public interface IRepository<Model> {
+public interface Repository<Model> {
     void add(Model model, Callback<Model> callback);
     void remove(Model model, Callback<Model> callback);
     void replace(ReplaceData<Model> input, Callback<ReplaceData<Model>> callback);

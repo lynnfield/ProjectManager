@@ -1,4 +1,4 @@
-package com.gensko.framework.data;
+package com.gensko.framework.data.repository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -7,10 +7,10 @@ import java.util.List;
  * Created by Genovich V.V. on 31.08.2015.
  */
 @SuppressWarnings("DefaultFileTemplate")
-public class SafeCallbackRepository<Model> implements IRepository<Model> {
-    private IRepository<Model> repository;
+public class SafeCallbackRepository<Model> implements Repository<Model> {
+    private Repository<Model> repository;
 
-    public SafeCallbackRepository(IRepository<Model> repository) {
+    public SafeCallbackRepository(Repository<Model> repository) {
         this.repository = repository;
     }
 
