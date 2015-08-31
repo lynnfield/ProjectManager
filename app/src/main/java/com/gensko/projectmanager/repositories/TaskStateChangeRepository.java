@@ -3,8 +3,8 @@ package com.gensko.projectmanager.repositories;
 import com.gensko.projectmanager.models.TaskStateChangeList;
 import com.gensko.projectmanager.models.Task;
 import com.gensko.projectmanager.models.TaskStateChange;
-import com.gensko.projectmanager.utils.ListLoader;
-import com.gensko.projectmanager.utils.ListSaver;
+import com.gensko.framework.utils.ListLoader;
+import com.gensko.framework.utils.ListSaver;
 import com.gensko.projectmanager.utils.TaskStateChangeListLoader;
 import com.gensko.projectmanager.utils.TaskStateChangeListSaver;
 

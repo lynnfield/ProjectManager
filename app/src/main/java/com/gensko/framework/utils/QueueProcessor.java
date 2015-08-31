@@ -1,4 +1,4 @@
-package com.gensko.framework.processing;
+package com.gensko.framework.utils;
 
 import java.util.LinkedList;
 import java.util.List;

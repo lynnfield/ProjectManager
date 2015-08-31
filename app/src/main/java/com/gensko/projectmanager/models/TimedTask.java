@@ -1,6 +1,6 @@
 package com.gensko.projectmanager.models;
 
-import com.gensko.projectmanager.utils.Jsonable;
+import com.gensko.framework.utils.Jsonable;
 import com.gensko.projectmanager.utils.TaskStateChangeComparator;
 
 import org.json.JSONException;

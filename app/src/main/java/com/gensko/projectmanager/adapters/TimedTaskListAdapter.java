@@ -11,7 +11,7 @@ import com.gensko.projectmanager.adapters.holders.TimedTaskViewHolder;
 import com.gensko.projectmanager.models.State;
 import com.gensko.projectmanager.models.TaskList;
 import com.gensko.projectmanager.models.TimedTask;
-import com.gensko.projectmanager.utils.Utils;
+import com.gensko.framework.utils.Utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

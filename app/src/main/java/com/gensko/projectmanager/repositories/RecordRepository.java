@@ -2,8 +2,8 @@ package com.gensko.projectmanager.repositories;
 
 import com.gensko.projectmanager.models.Record;
 import com.gensko.projectmanager.utils.AsyncObservable;
-import com.gensko.projectmanager.utils.ListLoader;
-import com.gensko.projectmanager.utils.ListSaver;
+import com.gensko.framework.utils.ListLoader;
+import com.gensko.framework.utils.ListSaver;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,7 @@
-package com.gensko.projectmanager.utils;
+package com.gensko.framework.utils;
 
 import android.os.Handler;
 import android.os.Looper;
-
-import com.gensko.framework.processing.RunnableProcessor;
 
 import org.json.JSONArray;
 import org.json.JSONException;

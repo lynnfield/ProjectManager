@@ -1,4 +1,4 @@
-package com.gensko.framework.processing;
+package com.gensko.framework.utils;
 
 /**
  * Created by Genovich V.V. on 27.08.2015.

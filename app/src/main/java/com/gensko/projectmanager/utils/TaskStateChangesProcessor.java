@@ -1,6 +1,6 @@
 package com.gensko.projectmanager.utils;
 
-import com.gensko.framework.processing.QueueProcessor;
+import com.gensko.framework.utils.QueueProcessor;
 import com.gensko.projectmanager.models.Task;
 import com.gensko.projectmanager.models.TaskStateChange;
 import com.gensko.projectmanager.models.TimedTask;

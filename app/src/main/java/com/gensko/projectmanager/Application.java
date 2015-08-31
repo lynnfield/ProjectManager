@@ -6,8 +6,8 @@ import android.widget.Toast;
 import com.gensko.projectmanager.observers.TimedTaskCreator;
 import com.gensko.projectmanager.repositories.TaskRepository;
 import com.gensko.projectmanager.repositories.TaskStateChangeRepository;
-import com.gensko.projectmanager.utils.ListLoader;
-import com.gensko.projectmanager.utils.ListSaver;
+import com.gensko.framework.utils.ListLoader;
+import com.gensko.framework.utils.ListSaver;
 
 import java.io.File;
 

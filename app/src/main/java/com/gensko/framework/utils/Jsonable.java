@@ -1,4 +1,4 @@
-package com.gensko.projectmanager.utils;
+package com.gensko.framework.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

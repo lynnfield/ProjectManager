@@ -1,4 +1,4 @@
-package com.gensko.projectmanager.utils;
+package com.gensko.framework.utils;
 
 import java.util.Calendar;
 
