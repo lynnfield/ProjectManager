@@ -1,10 +1,9 @@
 package com.gensko.projectmanager.utils;
 
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.gensko.projectmanager.models.Record;
+import com.gensko.framework.processing.RunnableProcessor;
 
 import org.json.JSONArray;
 import org.json.JSONException;

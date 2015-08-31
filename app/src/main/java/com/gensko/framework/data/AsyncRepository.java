@@ -3,7 +3,7 @@ package com.gensko.framework.data;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.gensko.projectmanager.utils.RunnableProcessor;
+import com.gensko.framework.processing.RunnableProcessor;
 
 import java.util.Comparator;
 import java.util.List;

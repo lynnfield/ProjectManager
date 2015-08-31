@@ -1,4 +1,4 @@
-package com.gensko.projectmanager.utils;
+package com.gensko.framework.processing;
 
 /**
  * Created by Genovich V.V. on 27.08.2015.
