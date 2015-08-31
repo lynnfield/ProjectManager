@@ -10,6 +10,7 @@ import com.gensko.projectmanager.adapters.holders.HierarchyTaskViewHolder;
 import com.gensko.projectmanager.adapters.holders.TaskViewHolder;
 import com.gensko.projectmanager.models.HierarchyTask;
 import com.gensko.projectmanager.models.TaskList;
+import com.gensko.projectmanager.repositories.TaskRepository;
 
 /**
  * Created by Genovich V.V. on 27.08.2015.
@@ -55,9 +56,12 @@ public class HierarchyTaskListAdapter extends TimedTaskListAdapter {
     public void onBindViewHolder(TaskViewHolder viewHolder, int position) {
         super.onBindViewHolder(viewHolder, position);
         if (viewHolder instanceof HierarchyTaskViewHolder) {
+            HierarchyTaskViewHolder holder = (HierarchyTaskViewHolder) viewHolder;
             HierarchyTask task = (HierarchyTask) get(position);
             StringBuilder builder = new StringBuilder();
             while (task.hasParent()) {
+                if (task.getParent() == null)
+                    TaskRepository.getInstance().loadParentFor(task);
                 builder
                         .append(task.getParent().getName())
                         .append(delimiter);
@@ -66,6 +70,7 @@ public class HierarchyTaskListAdapter extends TimedTaskListAdapter {
             int i = builder.lastIndexOf(delimiter);
             if (i >= 0)
                 builder.delete(i, builder.length() - 1);
+            holder.parentView.setText(builder.toString());
         }
     }
 }

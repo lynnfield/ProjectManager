@@ -1,8 +1,10 @@
 package com.gensko.projectmanager.repositories;
 
+import com.gensko.projectmanager.models.HierarchyTask;
 import com.gensko.projectmanager.models.Task;
 import com.gensko.projectmanager.models.TaskList;
 import com.gensko.projectmanager.models.TaskStateChange;
+import com.gensko.projectmanager.utils.HierarchyTaskListLoader;
 import com.gensko.projectmanager.utils.ListLoader;
 import com.gensko.projectmanager.utils.ListSaver;
 import com.gensko.projectmanager.utils.TaskListLoader;
@@ -26,6 +28,8 @@ public class TaskRepository extends RecordRepository<Task> {
 
     @Override
     protected boolean isSame(Task item, Object object) {
+        if (object instanceof Long)
+            return ((Long)object).equals(item.getId());
         if (object instanceof TaskStateChange)
             return ((TaskStateChange)object).getTaskId() == item.getId();
 
@@ -56,8 +60,11 @@ public class TaskRepository extends RecordRepository<Task> {
 
     @Override
     protected ListLoader<Task> createNewListLoader() {
-        return new TimedTaskListLoader();
+        return new HierarchyTaskListLoader();
     }
 
 
+    public void loadParentFor(HierarchyTask task) {
+        task.setParent((HierarchyTask) findBy(task.getParentId()));
+    }
 }

@@ -8,11 +8,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.gensko.projectmanager.R;
+import com.gensko.projectmanager.adapters.HierarchyTaskListAdapter;
 import com.gensko.projectmanager.adapters.TaskListAdapter;
 import com.gensko.projectmanager.adapters.TimedTaskListAdapter;
 import com.gensko.projectmanager.dialogs.CreateTaskDialog;
 import com.gensko.projectmanager.dialogs.DeleteTaskDialog;
 import com.gensko.projectmanager.dialogs.EditTaskDialog;
+import com.gensko.projectmanager.models.HierarchyTask;
 import com.gensko.projectmanager.models.TaskList;
 import com.gensko.projectmanager.models.State;
 import com.gensko.projectmanager.models.Task;
@@ -50,7 +52,7 @@ public class TasksActivity
         editTaskDialog = new EditTaskDialog(this, this);
         deleteTaskDialog = new DeleteTaskDialog(this, this);
         adapter =
-                new TimedTaskListAdapter(
+                new HierarchyTaskListAdapter(
                         this,
                         (TaskList) TaskRepository.getInstance().getData(),
                         this);
@@ -115,7 +117,7 @@ public class TasksActivity
     @Override
     public void onTaskClick(Task task) {
         preEditTaskState = task.getState();
-        editTaskDialog.setTask(task).show();
+        editTaskDialog.setTask((HierarchyTask) task).show();
     }
 
     @Override

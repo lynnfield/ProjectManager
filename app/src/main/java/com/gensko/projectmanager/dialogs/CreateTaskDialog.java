@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -46,6 +47,7 @@ public class CreateTaskDialog {
                     dialogInterface.cancel();
 
                 taskNameView.setText("");
+                parentTaskView.setSelection(0);
             }
         });
         dialog = builder.create();
@@ -55,7 +57,7 @@ public class CreateTaskDialog {
         dialog.show();
     }
 
-    public static interface OnTaskCreatedListener {
+    public interface OnTaskCreatedListener {
         void onTaskCreated(Task task);
     }
 }

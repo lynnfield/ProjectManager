@@ -4,16 +4,22 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.gensko.projectmanager.R;
+import com.gensko.projectmanager.adapters.SimpleTaskListAdapter;
+import com.gensko.projectmanager.models.HierarchyTask;
 import com.gensko.projectmanager.models.State;
 import com.gensko.projectmanager.models.Task;
+import com.gensko.projectmanager.repositories.TaskRepository;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
 
 /**
  * Created by Genovich V.V. on 18.08.2015.
@@ -22,6 +28,8 @@ import butterknife.OnClick;
 public class EditTaskDialog {
     @Bind(R.id.task_name)
     EditText taskNameView;
+    @Bind(R.id.task_parent)
+    Spinner taskParentView;
     @Bind(R.id.action_start)
     Button actionStart;
     @Bind(R.id.action_pause)
@@ -30,8 +38,9 @@ public class EditTaskDialog {
     Button actionDone;
 
     private final OnTaskEditedListener listener;
+
     private AlertDialog dialog;
-    private Task task;
+    private HierarchyTask task;
     private State old;
 
     public EditTaskDialog(final Context context, final OnTaskEditedListener listener) {
@@ -41,13 +50,15 @@ public class EditTaskDialog {
         View view = LayoutInflater.from(context).inflate(R.layout.edit_task, null);
 
         ButterKnife.bind(this, view);
+        taskParentView.setAdapter(
+                new SimpleTaskListAdapter(context, TaskRepository.getInstance().getData()));
 
         builder.setView(view);
         this.listener = listener;
         dialog = builder.create();
     }
 
-    public EditTaskDialog setTask(Task task) {
+    public EditTaskDialog setTask(HierarchyTask task) {
         this.task = task;
         this.old = task.getState();
         taskNameView.setText(task.getName());
@@ -55,6 +66,17 @@ public class EditTaskDialog {
         actionPause.setVisibility(task.getState().isPauseAvailable() ? View.VISIBLE : View.GONE);
         actionDone.setVisibility(task.getState().isDoneAvailable() ? View.VISIBLE : View.GONE);
         return this;
+    }
+
+    @OnItemSelected(R.id.task_parent)
+    void onItemSelected(int position) {
+        HierarchyTask task = (HierarchyTask) taskParentView.getAdapter().getItem(position);
+        this.task.setParent(task);
+    }
+
+    @OnItemSelected(value = R.id.task_parent, callback = OnItemSelected.Callback.NOTHING_SELECTED)
+    void onNothingSelected() {
+        task.setParent(null);
     }
 
     @OnClick(R.id.action_start)
@@ -99,7 +121,7 @@ public class EditTaskDialog {
         dialog.cancel();
     }
 
-    public static interface OnTaskEditedListener {
+    public interface OnTaskEditedListener {
         void onTaskEdited(Task task);
     }
 }

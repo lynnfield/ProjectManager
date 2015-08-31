@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 @SuppressWarnings("DefaultFileTemplate")
 public class HierarchyTaskViewHolder extends TimedTaskViewHolder {
     @Bind(R.id.parent)
-    TextView parentView;
+    public TextView parentView;
 
     public HierarchyTaskViewHolder(View view) {
         super(view);

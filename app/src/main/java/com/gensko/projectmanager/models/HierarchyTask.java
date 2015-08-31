@@ -16,7 +16,6 @@ public class HierarchyTask extends TimedTask {
     private HierarchyTask parent;
     private List<HierarchyTask> children = new ArrayList<>();
 
-
     public HierarchyTask(long parentId) {
         this.parentId = parentId;
     }
@@ -26,9 +25,7 @@ public class HierarchyTask extends TimedTask {
         this.parentId = parentId;
     }
 
-    public HierarchyTask() {
-
-    }
+    public HierarchyTask() {}
 
     public long getParentId() {
         if (parentId == null)
